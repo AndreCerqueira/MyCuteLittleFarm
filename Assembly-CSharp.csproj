@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -53,11 +53,52 @@
     <UnityVersion>2020.3.24f1</UnityVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Analyzer Include="C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\Scripts\Plant.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC721\ERC721OwnerOfExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\Wallet\Web3WalletTransfer1155Example.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Library\WebGL\Web3GL.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLSendContractExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC20\ERC20DecimalsExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC1155\ERC1155URIExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC20\ERC20SymbolExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC20\ERC20TotalSupplyExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC20\ERC20NameExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\TxStatus.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC721\ERC721OwnerOfBatchExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\EthBalanceOfExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\Wallet\Web3WalletSendTransactionExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC1155\ERC1155BalanceOfExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\CreateContractDataExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLSignMessageExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC721\ERC721URIExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\Wallet\Web3WalletLogOut.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Library\Web3Wallet.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\AllErc721Example.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLSendTransactionExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Library\ERC721.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Library\EVM.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLTransfer1155.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\Wallet\Web3WalletTransfer20Example.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLTransfer20.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\CustomCallExample.cs" />
+    <Compile Include="Assets\Web3Unity\Prefabs\ERC1155\ImportNFTTextureExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Library\ERC20.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Scenes\WebLogin.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC20\ERC20BalanceOfExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC721\ERC721BalanceOfExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Scenes\WalletLogin.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLSignOut.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\CustomRPCExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLTransfer721.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\Wallet\Web3WalletTransfer721Example.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\BlockNumberExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\VerifyExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\NonceExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Library\ERC1155.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\AllErc1155Example.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\Wallet\Web3WalletSignMessageExample.cs" />
+    <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC1155\ERC1155BalanceOfBatchExample.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
@@ -713,6 +754,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
+      <Project>{336541C5-3E44-F23C-0EAE-AAE102265B1A}</Project>
+      <Name>Assembly-CSharp-firstpass</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
