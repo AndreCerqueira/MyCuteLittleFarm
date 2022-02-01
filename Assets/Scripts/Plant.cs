@@ -5,6 +5,7 @@ using UnityEngine;
 public class Plant : MonoBehaviour
 {
     // Variables
+    public Seed seed;
     SpriteRenderer spriteRenderer;
     GameManager gameManager;
 
@@ -62,7 +63,7 @@ public class Plant : MonoBehaviour
     {
         while (currentFase < finalFase)
         {
-            float duration = Random.Range(1, 3);
+            float duration = Random.Range(6, 20);
             yield return new WaitForSeconds(duration);
             currentFase++;
         }

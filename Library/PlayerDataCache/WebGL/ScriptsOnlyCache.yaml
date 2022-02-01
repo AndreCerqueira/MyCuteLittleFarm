@@ -1,7 +1,5 @@
 ScriptsOnlyBuild:
   usedScripts:
-    Assembly-CSharp-firstpass.dll:
-    - UnityAsyncAwaitUtil.AsyncCoroutineRunner
     Assembly-CSharp.dll:
     - ERC1155BalanceOfExample
     - GameManager
@@ -11,7 +9,6 @@ ScriptsOnlyBuild:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.IK.Editor.dll:
     - UnityEditor.U2D.IK.IKEditorManager
-    - UnityEditor.U2D.IK.IKGizmos
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridBrush
     - UnityEditor.Tilemaps.GridBrushEditor
@@ -70,21 +67,21 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1460}
     - Class: 114
-      Script: {instanceID: 1532}
+      Script: {instanceID: 1738}
     - Class: 114
-      Script: {instanceID: 1796}
+      Script: {instanceID: 2002}
     - Class: 114
-      Script: {instanceID: 2286}
+      Script: {instanceID: 2492}
     - Class: 114
-      Script: {instanceID: 2722}
+      Script: {instanceID: 2928}
     - Class: 114
-      Script: {instanceID: 2898}
+      Script: {instanceID: 3104}
     - Class: 114
-      Script: {instanceID: 3068}
+      Script: {instanceID: 3274}
     - Class: 114
-      Script: {instanceID: 3138}
+      Script: {instanceID: 3344}
     - Class: 114
-      Script: {instanceID: 5684}
+      Script: {instanceID: 5888}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -131,19 +128,19 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 1460}
     - Class: 114
-      Script: {instanceID: 1532}
+      Script: {instanceID: 1738}
     - Class: 114
-      Script: {instanceID: 2224}
+      Script: {instanceID: 2430}
     - Class: 114
-      Script: {instanceID: 2286}
+      Script: {instanceID: 2492}
     - Class: 114
-      Script: {instanceID: 2722}
+      Script: {instanceID: 2928}
     - Class: 114
-      Script: {instanceID: 2898}
+      Script: {instanceID: 3104}
     - Class: 114
-      Script: {instanceID: 3138}
+      Script: {instanceID: 3344}
     - Class: 114
-      Script: {instanceID: 3510}
+      Script: {instanceID: 3716}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -927,4 +924,4 @@ ScriptsOnlyBuild:
   scenePathNames:
   - Assets/Web3Unity/Scenes/WebLogin.unity
   - Assets/Scenes/SampleScene.unity
-  playerPath: C:/Users/andre/Desktop/LittleFarm
+  playerPath: C:/Users/i/Desktop/CuteLittleFarm
