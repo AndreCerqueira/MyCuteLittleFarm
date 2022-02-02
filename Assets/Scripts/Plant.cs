@@ -5,7 +5,7 @@ using UnityEngine;
 public class Plant : MonoBehaviour
 {
     // Variables
-    public Seed seed;
+    public SeedRow row;
     SpriteRenderer spriteRenderer;
     GameManager gameManager;
 
@@ -24,7 +24,8 @@ public class Plant : MonoBehaviour
             if (currentFase > finalFase)
             {
                 currentFase = 0;
-                gameManager.addCoin(1);
+                gameManager.addCoin(row.seed.value);
+                getXp();
                 StartCoroutine(growth());
             }
 
@@ -39,6 +40,7 @@ public class Plant : MonoBehaviour
         // Set data
         gameManager = FindObjectOfType<GameManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        fases = row.seed.animation;
         spriteRenderer.sprite = fases[currentFase];
         finalFase = fases.Length - 1;
 
@@ -49,21 +51,21 @@ public class Plant : MonoBehaviour
     private void OnMouseDown()
     {
         if (currentFase == finalFase)
+        {
             currentFase++;
+        }
     }
 
-
-    // Update is called once per frame
-    void Update()
+    void getXp() 
     {
-        
+        row.xp += 10;
     }
 
     IEnumerator growth()
     {
         while (currentFase < finalFase)
         {
-            float duration = Random.Range(6, 20);
+            float duration = Random.Range(1, 3);
             yield return new WaitForSeconds(duration);
             currentFase++;
         }

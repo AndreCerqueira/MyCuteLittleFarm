@@ -18,6 +18,7 @@ public class BaseSeed : ScriptableObject
     public string name;
     public Sprite image;
     public Rarity rarity;
+    public Sprite[] animation;
     //public float value;
 
 }

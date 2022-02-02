@@ -15,9 +15,11 @@ public class GameManager : MonoBehaviour
 
     // Windows
     GameObject windowOpenPack;
+    GameObject windowPurchaceConfirmation;
     bool packOpened;
 
     // Other Objects
+    public BaseSeed[] baseSeeds;
     GameObject seedListView;
     WorldGenerator worldGenerator;
     Text coinsWalletText;
@@ -30,9 +32,6 @@ public class GameManager : MonoBehaviour
     // User variables
     public User user;
     bool plantMode;
-
-    // Cursors
-    public Texture2D plantCursor;
 
     public float gameCoins
     {
@@ -47,7 +46,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void addCoin(int amount)
+    public void addCoin(float amount)
     {
         gameCoins += amount;
     }
@@ -64,6 +63,7 @@ public class GameManager : MonoBehaviour
             menuInventory = GameObject.Find("Canvas/InventoryMenu");
             menuMyFarm = GameObject.Find("Canvas/MyFarmMenu");
             windowOpenPack = GameObject.Find("Canvas/OpenPackWindow");
+            windowPurchaceConfirmation = GameObject.Find("Canvas/PurchaceConfirmation");
             seedListView = GameObject.Find("Canvas/MyFarmMenu/Scroll View/Viewport/Content");
 
             coinsGameText = GameObject.Find("Canvas/InventoryMenu/Balance In Game/Text").GetComponent<Text>();
@@ -80,9 +80,10 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (plantMode)
         {
-            if (plantMode) {
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
 
                 // Get selected tile
                 Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -91,13 +92,14 @@ public class GameManager : MonoBehaviour
 
                 if (selectedTile.state == TerrainState.empty)
                 {
-
+                    // Get coords
                     Vector3Int pos = new Vector3Int(coords.x, coords.y, 0);
                     Vector3 finalPos = worldGenerator.tileMap.GetCellCenterWorld(pos);
                     finalPos.y += 0.5f;
 
+                    // Create plant
                     GameObject temp = Instantiate(plantPrefab, finalPos, Quaternion.identity);
-                    temp.GetComponent<Plant>().seed = lastRowSeedSelected.GetComponent<SeedRow>().seed;
+                    temp.GetComponent<Plant>().row = lastRowSeedSelected.GetComponent<SeedRow>();
                     temp.GetComponent<SpriteRenderer>().sortingOrder = coords.y * -1;
                     temp.transform.parent = GameObject.Find("Plants").transform;
 
@@ -114,17 +116,13 @@ public class GameManager : MonoBehaviour
 
     public void loadSeedRows()
     {
-        foreach (Seed seed in user.seeds) { 
+        foreach (Seed seed in user.seeds) 
+        { 
 
+            // Create row
             GameObject row = Instantiate(seedRowPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-
-            // Costumize row
-            row.transform.Find("level").GetComponent<Text>().text = "LVL " + seed.level + " - (" + seed.xp + "/100)";
-            row.transform.Find("Experience Bar").GetComponent<Slider>().value = (seed.xp / 100);
-            row.transform.Find("Speed/text").GetComponent<Text>().text = seed.growthSpeed.ToString();
-            row.transform.Find("Value/text").GetComponent<Text>().text = seed.value.ToString();
-
             row.GetComponent<SeedRow>().seed = seed;
+            row.GetComponent<SeedRow>().setData();
 
             // Place row
             row.transform.parent = seedListView.transform;
@@ -139,32 +137,32 @@ public class GameManager : MonoBehaviour
 
     public void openShopButton() 
     {
-        StartCoroutine(DoFadeIn(menuShop.GetComponent<CanvasGroup>()));
+        StartCoroutine(Utils.DoFadeIn(menuShop.GetComponent<CanvasGroup>()));
     }
 
     public void closeShopButton() 
     {
-        StartCoroutine(DoFadeOut(menuShop.GetComponent<CanvasGroup>()));
+        StartCoroutine(Utils.DoFadeOut(menuShop.GetComponent<CanvasGroup>()));
     }
 
     public void openInventoryButton() 
     {
-        StartCoroutine(DoFadeIn(menuInventory.GetComponent<CanvasGroup>()));
+        StartCoroutine(Utils.DoFadeIn(menuInventory.GetComponent<CanvasGroup>()));
     }
 
     public void closeInventoryButton() 
     {
-        StartCoroutine(DoFadeOut(menuInventory.GetComponent<CanvasGroup>()));
+        StartCoroutine(Utils.DoFadeOut(menuInventory.GetComponent<CanvasGroup>()));
     }
 
     public void openMyFarmButton() 
     {
-        StartCoroutine(DoFadeIn(menuMyFarm.GetComponent<CanvasGroup>()));
+        StartCoroutine(Utils.DoFadeIn(menuMyFarm.GetComponent<CanvasGroup>()));
     }
 
     public void closeMyFarmButton() 
     {
-        StartCoroutine(DoFadeOut(menuMyFarm.GetComponent<CanvasGroup>()));
+        StartCoroutine(Utils.DoFadeOut(menuMyFarm.GetComponent<CanvasGroup>()));
     }
 
     #endregion
@@ -173,11 +171,22 @@ public class GameManager : MonoBehaviour
     // Open / Close Windows
     #region Manage Windows
 
+    public void openPurchaceConfirmationWindow()
+    {
+        StartCoroutine(Utils.DoFadeIn(windowPurchaceConfirmation.GetComponent<CanvasGroup>()));
+    }
+
+    public void closePurchaceConfirmationWindow()
+    {
+        StartCoroutine(Utils.DoFadeOut(windowPurchaceConfirmation.GetComponent<CanvasGroup>()));
+    }
+
     public void openOpenPackWindow() 
     {
+        // Confirmation
+        //openPurchaceConfirmationWindow();
 
-        // Verify pack quantity
-        StartCoroutine(DoFadeIn(windowOpenPack.GetComponent<CanvasGroup>()));
+        StartCoroutine(Utils.DoFadeIn(windowOpenPack.GetComponent<CanvasGroup>()));
     }
 
     public void openManageFarmScene()
@@ -193,7 +202,7 @@ public class GameManager : MonoBehaviour
     public void closeOpenPackWindow() 
     {
         if (packOpened) {
-            StartCoroutine(DoFadeOut(windowOpenPack.GetComponent<CanvasGroup>()));
+            StartCoroutine(Utils.DoFadeOut(windowOpenPack.GetComponent<CanvasGroup>()));
             packOpened = false;
             lastPackOpened.GetComponent<Animator>().SetTrigger("reset");
             Image image = lastPackOpened.transform.Find("Image").GetComponent<Image>();
@@ -228,9 +237,14 @@ public class GameManager : MonoBehaviour
 
         lastRowSeedSelected = obj;
 
-        Cursor.SetCursor(plantCursor, Vector2.zero, CursorMode.ForceSoftware);
+        Sprite sprite = obj.transform.Find("Seed Icon").GetComponent<Image>().sprite;
+        Texture2D texture2D = Utils.textureFromSprite(sprite);
+
+        Cursor.SetCursor(texture2D, Vector2.zero, CursorMode.ForceSoftware);
         plantMode = true;
     }
+
+
 
     public void resetCursor()
     {
@@ -246,7 +260,7 @@ public class GameManager : MonoBehaviour
         foreach (Transform child in GameObject.Find("Plants").transform) 
         {
             Plant plant = child.GetComponent<Plant>();
-            if (plant.seed.id == id) 
+            if (plant.row.seed.id == id) 
             {
                 // Remove
                 Destroy(child.gameObject);
@@ -261,29 +275,5 @@ public class GameManager : MonoBehaviour
 
     }
 
-    #region Effects
 
-    static public IEnumerator DoFadeOut(CanvasGroup canvasG)
-    {
-        while (canvasG.alpha > 0) {
-            canvasG.alpha -= Time.deltaTime * 2;
-            yield return null;
-        }
-
-        canvasG.interactable = false;
-        canvasG.blocksRaycasts = false;
-    }
-
-    static public IEnumerator DoFadeIn(CanvasGroup canvasG)
-    {
-        canvasG.interactable = true;
-        canvasG.blocksRaycasts = true;
-
-        while (canvasG.alpha < 1) {
-            canvasG.alpha += Time.deltaTime * 2;
-            yield return null;
-        }
-    }
-
-    #endregion
 }

@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class Pack : MonoBehaviour
 {
 
-    [SerializeField] BaseSeed[] baseSeeds;
-
     public void getSeed()
     {
+
+        BaseSeed[] baseSeeds = GameObject.FindObjectOfType<GameManager>().baseSeeds;
         Image image = transform.Find("Image").GetComponent<Image>();
         image.enabled = true;
 

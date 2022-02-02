@@ -14,13 +14,24 @@ public class User
 
     public User (string _id)
     {
+
+        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+
         id = _id;
-        gameCoins = 20f;
+        gameCoins = 0f;
         walletCoins = 0.2f;
-
         seeds = new List<Seed>();
-        seeds.Add(new Seed());
+        seeds.Add(new Seed("1", gameManager.baseSeeds[3], 0.1f, 1));
+        seeds.Add(new Seed("2", gameManager.baseSeeds[0], 0.025f, 1));
+        seeds.Add(new Seed("3", gameManager.baseSeeds[2], 0.05f, 1));
+        seeds.Add(new Seed("4", gameManager.baseSeeds[1], 0.05f, 1));
 
+        getTerrains();
+    }
+
+
+    void getTerrains() 
+    {
         // Default free terrains
         terrains = new List<Terrain>();
         terrains.Add(new Terrain(1, 8, 12, TerrainType.grassLeftCornerSoil, TerrainState.wild));
@@ -46,6 +57,7 @@ public class User
         terrains.Add(new Terrain(1, 12, 11, TerrainType.grassRighCountinuoustSideSoil, TerrainState.wild));
         terrains.Add(new Terrain(1, 8, 10, TerrainType.grassLeftCountinuousSideSoil, TerrainState.wild));
         terrains.Add(new Terrain(1, 12, 10, TerrainType.grassRighCountinuoustSideSoil, TerrainState.wild));
+
     }
 
 }

@@ -13,5 +13,11 @@ MonoBehaviour:
   m_Name: Uvantora
   m_EditorClassIdentifier: 
   name: Uvantora
-  image: {fileID: -3593091133011289673, guid: 91140d4c89166fa4e9aa8d79791b313c, type: 3}
+  image: {fileID: 21300000, guid: 66830f9455fe09d4b9a56f0881971153, type: 3}
   rarity: 2
+  animation:
+  - {fileID: 8591533231565066105, guid: f9d7833064dbc1245a4d73667fa816b8, type: 3}
+  - {fileID: -7955193268978623404, guid: f9d7833064dbc1245a4d73667fa816b8, type: 3}
+  - {fileID: 897878412386164280, guid: f9d7833064dbc1245a4d73667fa816b8, type: 3}
+  - {fileID: -8035952563824040590, guid: f9d7833064dbc1245a4d73667fa816b8, type: 3}
+  - {fileID: -4807000962642994248, guid: f9d7833064dbc1245a4d73667fa816b8, type: 3}
