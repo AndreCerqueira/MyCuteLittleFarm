@@ -35,6 +35,7 @@ public class SeedRow : MonoBehaviour
 
         Button btnPlant = transform.Find("Plant Button").GetComponent<Button>();
         btnPlant.onClick.AddListener(delegate { gameManager.plantSeed(gameObject); });
+        //btnPlant.OnSelect.AddListener(delegate { gameManager.plantSeed(gameObject); });
 
         Button btnRemove = transform.Find("Remove Button").GetComponent<Button>();
         btnRemove.onClick.AddListener(delegate { gameManager.digSeed(gameObject); });
@@ -64,25 +65,25 @@ public class SeedRow : MonoBehaviour
         transform.Find("Speed/text").GetComponent<Text>().text = seed.growthSpeed.ToString();
         transform.Find("Value/text").GetComponent<Text>().text = seed.value.ToString();
         transform.Find("Seed Icon").GetComponent<Image>().sprite = seed.image;
-        setRarityLabel();
+        setRarityIcon();
     }
 
-    public void setRarityLabel()
+    public void setRarityIcon()
     {
 
         switch (seed.rarity)
         {
             case Rarity.Common:
-                transform.Find("Rarity/Common").GetComponent<Text>().enabled = true;
+                transform.Find("Rarity/Common").GetComponent<Image>().enabled = true;
                 break;
             case Rarity.Rare:
-                transform.Find("Rarity/Rare").GetComponent<Text>().enabled = true;
+                transform.Find("Rarity/Rare").GetComponent<Image>().enabled = true;
                 break;
             case Rarity.Epic:
-                transform.Find("Rarity/Epic").GetComponent<Text>().enabled = true;
+                transform.Find("Rarity/Epic").GetComponent<Image>().enabled = true;
                 break;
             case Rarity.Legendary:
-                transform.Find("Rarity/Legendary").GetComponent<Text>().enabled = true;
+                transform.Find("Rarity/Legendary").GetComponent<Image>().enabled = true;
                 break;
             default:
                 break;

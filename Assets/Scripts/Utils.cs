@@ -18,6 +18,10 @@ public class Utils : MonoBehaviour
         return (float)Math.Round(getRarityValue(rarity) * 1.75f * Mathf.Log10(level + 1), 2);
     }
 
+    public static int getNewSpeedUpgraded(int currentSpeed)
+    {
+        return currentSpeed;
+    }
 
     static int getRarityValue(Rarity rarity)
     {
