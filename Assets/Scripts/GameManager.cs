@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -43,6 +44,20 @@ public class GameManager : MonoBehaviour
         {
             user.gameCoins = value;
             coinsGameText.text = user.gameCoins.ToString();
+            //Debug.Log(user.gameCoins * Math.Pow(10, 19));
+        }
+    }
+
+    public float walletCoins
+    {
+        get
+        {
+            return user.walletCoins;
+        }
+        set
+        {
+            user.walletCoins = value;
+            coinsWalletText.text = user.walletCoins.ToString();
         }
     }
 

@@ -59,6 +59,7 @@
     <Compile Include="Assets\Scripts\Pack.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLTransfer721.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Prefabs\Wallet\Web3WalletSignMessageExample.cs" />
+    <Compile Include="Assets\Scripts\Utils.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC721\ERC721OwnerOfExample.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Prefabs\ERC1155\ERC1155BalanceOfExample.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Scenes\WalletLogin.cs" />
@@ -106,7 +107,6 @@
     <Compile Include="Assets\Web3Unity\Scripts\Prefabs\WebGL\WebGLSendContractExample.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\CreateContractDataExample.cs" />
     <Compile Include="Assets\Web3Unity\Scripts\Prefabs\EVM\NonceExample.cs" />
-    <Compile Include="Assets\Scripts\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">

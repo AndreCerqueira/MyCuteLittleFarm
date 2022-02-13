@@ -19,7 +19,7 @@ public class User
 
         id = _id;
         gameCoins = 0f;
-        walletCoins = 0.2f;
+        walletCoins = 0f;
         seeds = new List<Seed>();
         seeds.Add(new Seed("1", gameManager.baseSeeds[3], 0.1f, 1));
         seeds.Add(new Seed("2", gameManager.baseSeeds[0], 0.025f, 1));

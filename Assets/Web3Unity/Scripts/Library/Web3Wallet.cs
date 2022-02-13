@@ -15,6 +15,14 @@ public class Web3Wallet
         // open application
         Application.OpenURL(url + "?action=send" + "&chainId=" + _chainId + "&to=" + _to + "&value=" + _value + "&data=" + _data + "&gasLimit=" + _gasLimit + "&gasPrice=" + _gasPrice);
         // set clipboard to empty
+
+        Debug.Log("_chainId " + _chainId);
+        Debug.Log("_to " + _to);
+        Debug.Log("_value " + _value);
+        Debug.Log("_data " + _data);
+        Debug.Log("_gasLimit " + _gasLimit);
+        Debug.Log("_gasPrice " + _gasPrice);
+
         GUIUtility.systemCopyBuffer = "";
         // wait for clipboard response
         string clipBoard = "";
@@ -23,6 +31,7 @@ public class Web3Wallet
             clipBoard = GUIUtility.systemCopyBuffer;
             await Task.Delay(100);
         }
+
         // check if clipboard response is valid
         if (clipBoard.StartsWith("0x") && clipBoard.Length == 66)
         {
