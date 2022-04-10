@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using LootLocker.Requests;
 
 public class GameManager : MonoBehaviour
 {
@@ -20,31 +21,47 @@ public class GameManager : MonoBehaviour
     bool packOpened;
 
     // Other Objects
-    public BaseSeed[] baseSeeds;
-    GameObject seedListView;
     WorldGenerator worldGenerator;
+    public BaseSeed[] baseSeeds;
     Text coinsWalletText;
     Text coinsGameText;
+    Text packsGameText;
+    [SerializeField] Button openPackButton;
+    [SerializeField] GameObject seedListView;
+    [SerializeField] GameObject seedRowPrefab;
 
     // Prefabs
-    [SerializeField] GameObject seedRowPrefab;
     [SerializeField] GameObject plantPrefab;
 
     // User variables
     public User user;
     bool plantMode;
 
-    public float gameCoins
+    public int inGamePacks
     {
         get
         {
-            return user.gameCoins;
+            return user.inGamePacks;
         }
         set
         {
-            user.gameCoins = value;
-            coinsGameText.text = user.gameCoins.ToString();
-            //Debug.Log(user.gameCoins * Math.Pow(10, 19));
+            user.inGamePacks = value;
+            packsGameText.text = user.inGamePacks.ToString();
+            openPackButton.interactable = (inGamePacks != 0);
+
+        }
+    }
+
+    public float inGameCoins
+    {
+        get
+        {
+            return user.inGameCoins;
+        }
+        set
+        {
+            user.inGameCoins = value;
+            coinsGameText.text = user.inGameCoins.ToString();
         }
     }
 
@@ -61,16 +78,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     public void addCoin(float amount)
     {
-        gameCoins += amount;
+        inGameCoins += amount;
+        user.inventory.updateGameCoins(inGameCoins.ToString());
     }
 
+
     // Start is called before the first frame update
-    void Awake()
+    async void Awake()
     {
 
         user = new User("111111");
+
+        //Inventory.addItem();
 
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
@@ -79,18 +101,17 @@ public class GameManager : MonoBehaviour
             menuMyFarm = GameObject.Find("Canvas/MyFarmMenu");
             windowOpenPack = GameObject.Find("Canvas/OpenPackWindow");
             windowPurchaceConfirmation = GameObject.Find("Canvas/PurchaceConfirmation");
-            seedListView = GameObject.Find("Canvas/MyFarmMenu/Scroll View/Viewport/Content");
 
             coinsGameText = GameObject.Find("Canvas/InventoryMenu/Balance In Game/Text").GetComponent<Text>();
-            coinsGameText.text = gameCoins.ToString();
-
+            packsGameText = GameObject.Find("Canvas/InventoryMenu/Packs  In Game/Background/Text").GetComponent<Text>();
+            
             worldGenerator = GetComponent<WorldGenerator>();
 
-            loadSeedRows();
+            coinsWalletText = GameObject.Find("Canvas/BalanceCounter/Text").GetComponent<Text>();
+            string balance = await Web3Manager.getBalance();
+            print("balance " + balance + " from " + PlayerPrefs.GetString("Account"));
+            walletCoins = float.Parse(balance);
         }
-
-        coinsWalletText = GameObject.Find("Canvas/BalanceCounter/Text").GetComponent<Text>();
-        coinsWalletText.text = user.walletCoins.ToString();
     }
 
     void Update()
@@ -99,7 +120,6 @@ public class GameManager : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
-
                 // Get selected tile
                 Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 Vector3Int coords = worldGenerator.tileMap.WorldToCell(mouseWorldPos);
@@ -125,24 +145,6 @@ public class GameManager : MonoBehaviour
                 }
                 resetCursor();
             }
-        }
-    }
-
-
-    public void loadSeedRows()
-    {
-        foreach (Seed seed in user.seeds) 
-        { 
-
-            // Create row
-            GameObject row = Instantiate(seedRowPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            row.GetComponent<SeedRow>().seed = seed;
-            row.GetComponent<SeedRow>().setData();
-
-            // Place row
-            row.transform.parent = seedListView.transform;
-            row.transform.localScale = new Vector3(1, 1, 1);
-
         }
     }
 
@@ -230,17 +232,96 @@ public class GameManager : MonoBehaviour
 
     // Other Functionalities
 
+    public void displayInventory(LootLockerInventory[] inventory)
+    {
+        foreach (LootLockerInventory item in inventory)
+        {
+            addSeedToInventory(item.asset);
+        }
+    }
+
+
+    private void addSeedToInventory(LootLockerCommonAsset asset)
+    {
+        Seed seed = getSeedFromAsset(asset);
+
+        if (seed != null)
+            addRowToInventory(seed);
+    }
+
+
+    private Seed getSeedFromAsset(LootLockerCommonAsset asset)
+    {
+
+        BaseSeed baseSeed = Utils.getBaseSeedById(asset.id);
+
+        if (baseSeed == null)
+            return null;
+
+        float value = 1;
+        float speed = 1;
+
+        foreach (var data in asset.storage)
+        {
+            if (data.key == "Speed")
+                speed = float.Parse(data.value);
+
+            if (data.key == "Value")
+                value = float.Parse(data.value);
+        }
+
+        Seed seed = new Seed(asset.id, baseSeed, value, speed);
+        return seed;
+    }
+
+
+    private void addRowToInventory(Seed seed)
+    {
+        GameObject row = Instantiate(seedRowPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        row.GetComponent<SeedRow>().seed = seed;
+        row.GetComponent<SeedRow>().setData();
+        row.transform.SetParent(seedListView.transform);
+        row.transform.localScale = new Vector3(1, 1, 1);
+    }
+
+
+    public void buyPack(int price = 10)
+    {
+        Web3Manager.TransferERC20(()=> {
+
+            user.inventory.addPack(inGameCoins.ToString());
+            inGamePacks++;
+
+        });
+    }
+
+
     GameObject lastPackOpened;
     public void openPack(GameObject obj) 
     {
-        if (!packOpened) {
-            obj.GetComponent<Animator>().SetTrigger("play");
-            lastPackOpened = obj;
-            packOpened = true;
+
+        if (!packOpened)
+        {
+
+            user.inventory.openPack((reward) => {
+
+                obj.GetComponent<Animator>().SetTrigger("play");
+                lastPackOpened = obj;
+                packOpened = true;
+                inGamePacks--;
+
+                obj.GetComponent<Pack>().reward = Utils.getBaseSeedById(reward.asset.id);
+
+                addSeedToInventory(reward.asset);
+
+            });
+
         }
-        else {
+        else
+        {
             closeOpenPackWindow();
         }
+
     }
 
 
@@ -260,18 +341,18 @@ public class GameManager : MonoBehaviour
     }
 
 
-
     public void resetCursor()
     {
         Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
         plantMode = false;
     }
 
+
     public void digSeed(GameObject obj)
     {
 
         // Remove plant from the game
-        string id = obj.GetComponent<SeedRow>().seed.id;
+        int id = obj.GetComponent<SeedRow>().seed.id;
         foreach (Transform child in GameObject.Find("Plants").transform) 
         {
             Plant plant = child.GetComponent<Plant>();

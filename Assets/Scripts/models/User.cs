@@ -7,24 +7,29 @@ public class User
 
     // Variables
     string id;
-    public float gameCoins;
+    public int inGamePacks;
+    public float inGameCoins;
     public float walletCoins;
-    public List<Seed> seeds;
+    public Inventory inventory;
+    public GameManager gameManager;
     public List<Terrain> terrains;
 
     public User (string _id)
     {
-
-        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
+        inventory = new Inventory();
+        gameManager = GameObject.FindObjectOfType<GameManager>();
 
         id = _id;
-        gameCoins = 0f;
+
+        inventory.getGameCoins((coins) => {
+            gameManager.inGameCoins = coins;
+        });
+
+        inventory.getPacks((packs) => {
+            gameManager.inGamePacks = packs;
+        });
+
         walletCoins = 0f;
-        seeds = new List<Seed>();
-        seeds.Add(new Seed("1", gameManager.baseSeeds[3], 0.1f, 1));
-        seeds.Add(new Seed("2", gameManager.baseSeeds[0], 0.025f, 1));
-        seeds.Add(new Seed("3", gameManager.baseSeeds[2], 0.05f, 1));
-        seeds.Add(new Seed("4", gameManager.baseSeeds[1], 0.05f, 1));
 
         getTerrains();
     }

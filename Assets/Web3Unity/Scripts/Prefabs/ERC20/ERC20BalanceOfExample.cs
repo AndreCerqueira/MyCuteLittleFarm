@@ -1,26 +1,18 @@
-using System;
 using System.Collections;
 using System.Numerics;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ERC20BalanceOfExample : MonoBehaviour
 {
-    GameManager gameManager;
-
     async void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
-
-        string chain = "ethereum";
-        string network = "rinkeby";
-        string contract = "0xa90e70fcfdf140b065cc51bc41961683b3ef1b66";
-        string account = "0xe02e155e1b22665b0998cbe5b5b9c45b4faecf18";
+        string chain = "binance";
+        string network = "testnet";
+        string contract = "0x80D1486eF600cc56d4df9ed33bAF53C60D5A629b";
+        string account = "0x02F1828f21B7Ec274DD9E5BC1b83354d5225beF6";
 
         BigInteger balanceOf = await ERC20.BalanceOf(chain, network, contract, account);
-        float finalBalance = (float)Math.Round((float)balanceOf / Mathf.Pow(10, 18), 2); // 10 ^ 18
-
-        gameManager.walletCoins = finalBalance;
+        print(balanceOf); 
     }
 }

@@ -34,6 +34,7 @@ public class WalletLogin: MonoBehaviour
         if (account.Length == 42 && expirationTime >= now) {
             // save account
             PlayerPrefs.SetString("Account", account);
+            print("Account: " + account);
             // load next scene
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }

@@ -126,13 +126,16 @@ public class EVM
     return data.response;
   }
 
-  public static async Task<string> AllErc721(string _chain, string _network, string _account, string _contract = "")
+  public static async Task<string> AllErc721(string _chain, string _network, string _account, string _contract = "", int _first = 500, int _skip = 0)
   {
     WWWForm form = new WWWForm();
     form.AddField("chain", _chain);
     form.AddField("network", _network);
     form.AddField("account", _account);
     form.AddField("contract", _contract);
+    form.AddField("first", _first);
+    form.AddField("skip", _skip);
+
     string url = host + "/all721";
     UnityWebRequest webRequest = UnityWebRequest.Post(url, form);
     await webRequest.SendWebRequest();
@@ -140,13 +143,16 @@ public class EVM
     return data.response;
   }
 
-  public static async Task<string> AllErc1155(string _chain, string _network, string _account, string _contract = "")
+
+    public static async Task<string> AllErc1155(string _chain, string _network, string _account, string _contract = "", int _first = 500, int _skip = 0)
   {
     WWWForm form = new WWWForm();
     form.AddField("chain", _chain);
     form.AddField("network", _network);
     form.AddField("account", _account);
     form.AddField("contract", _contract);
+    form.AddField("first", _first);
+    form.AddField("skip", _skip);
     string url = host + "/all1155";
     UnityWebRequest webRequest = UnityWebRequest.Post(url, form);
     await webRequest.SendWebRequest();
@@ -215,7 +221,29 @@ public class EVM
     return data.response;
   }
 
-  public static async Task<string> BroadcastTransaction(string _chain, string _network, string _account, string _to, string _value, string _data, string _signature, string _gasPrice, string _gasLimit, string _rpc)
+    public static async Task<string> MintNFTTransaction(string _chain, string _network, string _account, string _to, string _value,  string _cid, string _data, string _signature , string _gasPrice = "", string _gasLimit = "", string _rpc = "")
+    {
+        WWWForm form = new WWWForm();
+        form.AddField("chain", _chain);
+        form.AddField("network", _network);
+        form.AddField("account", _account);
+        form.AddField("to", _to);
+        form.AddField("data", _data);
+        form.AddField("value", _value);
+
+        form.AddField("signature", _signature);
+        form.AddField("gasPrice", _gasPrice);
+        form.AddField("gasLimit", _gasLimit);
+        form.AddField("rpc", _rpc);
+        string url = host + "/createMintNFTTransaction";
+        UnityWebRequest webRequest = UnityWebRequest.Post(url, form);
+        webRequest.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        await webRequest.SendWebRequest();
+        Response<string> data = JsonUtility.FromJson<Response<string>>(System.Text.Encoding.UTF8.GetString(webRequest.downloadHandler.data));
+        return data.response;
+    }
+
+    public static async Task<string> BroadcastTransaction(string _chain, string _network, string _account, string _to, string _value, string _data, string _signature, string _gasPrice, string _gasLimit, string _rpc)
   {
     WWWForm form = new WWWForm();
     form.AddField("chain", _chain);

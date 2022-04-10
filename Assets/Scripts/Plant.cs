@@ -15,10 +15,12 @@ public class Plant : MonoBehaviour
 
     public int currentFase
     {
-        get { 
-            return _currentFase; 
+        get
+        {
+            return _currentFase;
         }
-        set { 
+        set
+        {
             _currentFase = value;
 
             if (currentFase > finalFase)
@@ -56,7 +58,7 @@ public class Plant : MonoBehaviour
         }
     }
 
-    void getXp() 
+    void getXp()
     {
         row.xp += 10;
     }

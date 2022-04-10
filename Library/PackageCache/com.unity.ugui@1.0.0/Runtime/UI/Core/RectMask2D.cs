@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
+using UnityEngine.Pool;
 
 namespace UnityEngine.UI
 {
-    [AddComponentMenu("UI/Rect Mask 2D", 13)]
+    [AddComponentMenu("UI/Rect Mask 2D", 14)]
     [ExecuteAlways]
     [DisallowMultipleComponent]
     [RequireComponent(typeof(RectTransform))]

@@ -2,43 +2,19 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Networking;
+
+public enum Rarity
+{
+    Common,
+    Rare,
+    Epic,
+    Legendary
+}
 
 public class Utils : MonoBehaviour
 {
-
-    // Missing Rarity seed condition
-    // Missing MAX Level (5)
-    public static int getMaxXP(int level, Rarity rarity)
-    {
-        return Mathf.RoundToInt(100 * (level + getRarityValue(rarity)) * Mathf.Log10(level + 1));
-    }
-
-    public static float getUpgradeCost(int level, Rarity rarity)
-    {
-        return (float)Math.Round(getRarityValue(rarity) * 1.75f * Mathf.Log10(level + 1), 2);
-    }
-
-    public static int getNewSpeedUpgraded(int currentSpeed)
-    {
-        return currentSpeed;
-    }
-
-    static int getRarityValue(Rarity rarity)
-    {
-        switch (rarity)
-        {
-            case Rarity.Common:
-                return 1;
-            case Rarity.Rare:
-                return 2;
-            case Rarity.Epic:
-                return 3;
-            case Rarity.Legendary:
-                return 4;
-            default:
-                return 404;
-        }
-    }
 
     public static Texture2D textureFromSprite(Sprite sprite)
     {
@@ -58,9 +34,60 @@ public class Utils : MonoBehaviour
     }
 
 
+    public static BaseSeed getBaseSeedById(int id)
+    {
+        GameManager gameManager = FindObjectOfType<GameManager>();
+        BaseSeed[] seeds = gameManager.baseSeeds;
+
+        foreach (BaseSeed seed in seeds)
+        {
+            if (seed.id == id)
+                return seed;
+        }
+
+        return null;
+    }
+
+
+    static public string ConvertEthToWei(float eth)
+    {
+        float decimals = 1000000000000000000;
+        float wei = eth * decimals;
+        string value = Convert.ToDecimal(wei).ToString();
+
+        return value;
+    }
+
+
+    static public string ConvertWeiToEth(float wei)
+    {
+        float decimals = 1000000000000000000; // 18 decimals
+        float eth = wei / decimals;
+
+        return Convert.ToDecimal(eth).ToString();
+    }
+
+
+    IEnumerator DownloadImage(string MediaUrl, Action<Sprite> callback)
+    {
+        Texture2D texture = null;
+        UnityWebRequest request = UnityWebRequestTexture.GetTexture(MediaUrl);
+        yield return request.SendWebRequest();
+        if (request.isNetworkError || request.isHttpError)
+            Debug.Log(request.error);
+        else
+            texture = ((DownloadHandlerTexture)request.downloadHandler).texture;
+
+        Rect rect = new Rect(0, 0, texture.width, texture.height);
+        Sprite sprite = Sprite.Create(texture, rect, new Vector2(0.5f, 0.5f));
+
+        callback(sprite);
+    }
+
+
     #region Effects
 
-        static public IEnumerator DoFadeOut(CanvasGroup canvasG)
+    static public IEnumerator DoFadeOut(CanvasGroup canvasG)
         {
             while (canvasG.alpha > 0)
             {
