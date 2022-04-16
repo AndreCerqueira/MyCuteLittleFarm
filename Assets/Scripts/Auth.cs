@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 using System.Runtime.InteropServices;
 using UnityEngine.SceneManagement;
 using LootLocker.Requests;
 using System.Threading.Tasks;
+using System;
 
 public class Auth : MonoBehaviour
 {
@@ -22,6 +25,34 @@ public class Auth : MonoBehaviour
     private int expirationTime;
     private string account;
 
+    [SerializeField] TextMeshProUGUI emailText;
+    [SerializeField] TextMeshProUGUI passwordText;
+    [SerializeField] Toggle remember;
+
+
+    public void Start()
+    {
+        LootLockerSDKManager.CheckWhiteLabelSession(response =>
+        {
+            if (response)
+            {
+                // Start a new session
+                Debug.Log("session is valid, you can start a game session");
+
+                StartLootLockerSession(() => {
+                    SceneManager.LoadScene("MainScene");
+                });
+
+            }
+            else
+            {
+                // Show login form here
+                Debug.Log("session is NOT valid, we should show the login form");
+            }
+        });
+    }
+
+
     async private void OnConnected()
     {
         account = ConnectAccount();
@@ -34,8 +65,7 @@ public class Auth : MonoBehaviour
         PlayerPrefs.SetString("Account", account);
         // reset login message
         SetConnectAccount("");
-        // load next scene
-        SceneManager.LoadScene("MainScene");
+        LoginWithLootLocker();
     }
 
     public void OnSkip()
@@ -52,34 +82,76 @@ public class Auth : MonoBehaviour
     /*
         Log In Button Event
      */
-    public async void HandleAuthButtonClick()
+    public async void HandleLoginButtonClick()
     {
-        await LoginWithWeb3();
+        // await LoginWithWeb3();
+        LoginWithLootLocker();
+    }
+
+    public async void HandleRegisterButtonClick()
+    {
+        RegisterWithLootLocker();
     }
 
 
     // Start is called before the first frame update
     private void LoginWithLootLocker()
     {
-        // Login
-        LootLockerSDKManager.StartGuestSession((response) =>
+        string email = emailText.text;
+        string password = passwordText.text;
+        bool rememberMe = remember.isOn;
+        LootLockerSDKManager.WhiteLabelLogin(email, password, rememberMe, response =>
+        {
+            if (!response.success)
+            {
+                Debug.Log("error while logging in");
+                return;
+            }
+
+            // Start game session here
+            Debug.Log("user logged in");
+            //string token = response.SessionToken;
+
+            StartLootLockerSession(() => {
+                SceneManager.LoadScene("MainScene");
+            });
+        });
+
+    }
+
+
+    private void RegisterWithLootLocker()
+    {
+        string email = emailText.text;
+        string password = passwordText.text;
+        LootLockerSDKManager.WhiteLabelSignUp(email, password, (response) =>
+        {
+            if (!response.success)
+            {
+                Debug.Log("error while creating user");
+                return;
+            }
+
+            Debug.Log("user created successfully");
+
+        });
+    }
+
+
+    private void StartLootLockerSession(Action callback)
+    {
+        LootLockerSDKManager.StartWhiteLabelSession((response) =>
         {
             if (!response.success)
             {
                 Debug.Log("error starting LootLocker session");
+
                 return;
             }
 
-            Debug.Log("successfully started LootLocker session");
+            Debug.Log("session started successfully");
+            callback();
 
-            // Create Coins if player first time
-            LootLockerSDKManager.GetSingleKeyPersistentStorage("coins", (response) =>
-            {
-                if (response.payload == null)
-                    LootLockerSDKManager.UpdateOrCreateKeyValue("coins", "0", (_) => { });
-            });
-
-            SceneManager.LoadScene("MainScene");
         });
     }
 

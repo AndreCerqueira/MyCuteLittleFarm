@@ -13,7 +13,7 @@ public class WorldGenerator : MonoBehaviour
     public Terrain[,] map;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         user = GetComponent<GameManager>().user;
         width = 20;
@@ -22,11 +22,6 @@ public class WorldGenerator : MonoBehaviour
         Generate();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     void Generate()
     {
@@ -35,6 +30,7 @@ public class WorldGenerator : MonoBehaviour
         generateArray(width, height);
         terrainGeneration();
         renderMap();
+        user.loadUserData();
 
     }
 
@@ -68,7 +64,8 @@ public class WorldGenerator : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                tileMap.SetTile(new Vector3Int(x, y, 0), tiles[getTileByType(map[x, y].type)]);
+                if (map[x, y].type != TerrainType.grass)
+                    tileMap.SetTile(new Vector3Int(x, y, 0), tiles[getTileByType(map[x, y].type)]);
             }
         }
     }
@@ -81,24 +78,35 @@ public class WorldGenerator : MonoBehaviour
                 return 0;
             case TerrainType.soil:
                 return 1;
-            case TerrainType.soilBottom:
+            case TerrainType.bottom:
                 return 2;
-            case TerrainType.grassTopSoil:
+            case TerrainType.top:
                 return 3;
-            case TerrainType.grassLeftCornerSoil:
+            case TerrainType.left:
                 return 4;
-            case TerrainType.grassRightCornerSoil:
+            case TerrainType.right:
                 return 5;
-            case TerrainType.grassLeftSideSoil:
+            case TerrainType.bottomLeftCorner:
                 return 6;
-            case TerrainType.grassRightSideSoil:
+            case TerrainType.bottomRightCorner:
                 return 7;
-            case TerrainType.grassLeftCountinuousSideSoil:
+            case TerrainType.topLeftCorner:
                 return 8;
-            case TerrainType.grassRighCountinuoustSideSoil:
+            case TerrainType.topRightCorner:
                 return 9;
+            case TerrainType.bottomWithBorders:
+                return 10;
+            case TerrainType.topWithBorders:
+                return 11;
+            case TerrainType.leftWithBorders:
+                return 12;
+            case TerrainType.rightWithBorders:
+                return 13;
+            case TerrainType.soilWithFullBorders:
+                return 14;
             default:
                 return 404;
+
         }
     }
 

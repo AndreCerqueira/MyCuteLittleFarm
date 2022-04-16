@@ -43,6 +43,17 @@ public class SeedRow : MonoBehaviour
         Button btnUpgrade = transform.Find("Upgrade Button").GetComponent<Button>();
         btnUpgrade.onClick.AddListener(delegate { upgradeSeed(); });
 
+        if (seed.state != "stored")
+        {
+            seed.placeSeed(this);
+        }
+
+        seed.getProgressFromLootLocker((_xp, _level) =>
+        {
+            xp = _xp;
+            seed.level = _level;
+        });
+
     }
 
 
@@ -51,7 +62,7 @@ public class SeedRow : MonoBehaviour
         if (seed.xp >= seed.maxXp) 
         {
             transform.Find("Upgrade Button").GetComponent<Button>().interactable = false;
-            seed.levelUp();
+            // TODO seed.levelUp();
             setData();
         }
     }

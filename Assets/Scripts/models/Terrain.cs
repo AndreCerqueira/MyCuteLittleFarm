@@ -30,15 +30,23 @@ public enum TerrainType
     grass,
     soil,
 
-    soilBottom,
-    grassTopSoil,
+    bottom,
+    top,
 
-    grassLeftCornerSoil,
-    grassRightCornerSoil,
+    left,
+    right,
 
-    grassLeftSideSoil,
-    grassRightSideSoil,
+    bottomLeftCorner,
+    bottomRightCorner,
 
-    grassLeftCountinuousSideSoil,
-    grassRighCountinuoustSideSoil
+    topLeftCorner,
+    topRightCorner,
+
+    bottomWithBorders,
+    topWithBorders,
+
+    leftWithBorders,
+    rightWithBorders,
+
+    soilWithFullBorders
 }

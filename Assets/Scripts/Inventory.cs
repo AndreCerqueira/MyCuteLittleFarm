@@ -36,22 +36,6 @@ public class Inventory
     }
 
 
-    public void addItem()
-    {
-        LootLockerSDKManager.TriggeringAnEvent("getFreeSeed", (response) =>
-        {
-            if (response.success)
-            {
-                Debug.Log("Successfully triggered event");
-            }
-            else
-            {
-                Debug.Log("Error triggering event");
-            }
-        });
-    }
-
-
     public void getGameCoins(Action<float> callback)
     {
         LootLockerSDKManager.GetSingleKeyPersistentStorage("coins", (response) =>
@@ -175,7 +159,35 @@ public class Inventory
         {
             if (response.success && response.objects != null)
             {
-                callback(response.objects[0]);
+                var item = response.objects[0];
+                setAllSeedKeyPairValues(item.instance_id, () =>
+                {
+                    callback(item);
+                });
+            }
+        });
+    }
+
+
+    private void setAllSeedKeyPairValues(int id, Action callback)
+    {
+        LootLockerSDKManager.CreateKeyValuePairForAssetInstances(id, "state", "stored", (response) =>
+        {
+            if (response.success)
+            {
+                LootLockerSDKManager.CreateKeyValuePairForAssetInstances(id, "xp", "0", (response) =>
+                {
+                    if (response.success)
+                    {
+                        LootLockerSDKManager.CreateKeyValuePairForAssetInstances(id, "level", "1", (response) =>
+                        {
+                            if (response.success)
+                            {
+                                callback();
+                            }
+                        });
+                    }
+                });
             }
         });
     }

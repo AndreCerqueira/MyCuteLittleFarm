@@ -26,9 +26,7 @@ public class Plant : MonoBehaviour
             if (currentFase > finalFase)
             {
                 currentFase = 0;
-                gameManager.addCoin(row.seed.value);
-                getXp();
-                StartCoroutine(growth());
+                harvest();
             }
 
             spriteRenderer.sprite = fases[currentFase];
@@ -58,10 +56,21 @@ public class Plant : MonoBehaviour
         }
     }
 
-    void getXp()
+
+    private void harvest()
+    {
+        gameManager.addCoin(row.seed.value);
+        getXp();
+        StartCoroutine(growth());
+    }
+
+
+    private void getXp()
     {
         row.xp += 10;
+        row.seed.setProgressIntoLootLocker();
     }
+
 
     IEnumerator growth()
     {

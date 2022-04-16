@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using LootLocker.Requests;
+using UnityEngine.Networking;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
     bool packOpened;
 
     // Other Objects
-    WorldGenerator worldGenerator;
+    public WorldGenerator worldGenerator;
     public BaseSeed[] baseSeeds;
     Text coinsWalletText;
     Text coinsGameText;
@@ -87,12 +88,8 @@ public class GameManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    async void Awake()
+    void Awake()
     {
-
-        user = new User("111111");
-
-        //Inventory.addItem();
 
         if (SceneManager.GetActiveScene().name == "MainScene")
         {
@@ -101,18 +98,19 @@ public class GameManager : MonoBehaviour
             menuMyFarm = GameObject.Find("Canvas/MyFarmMenu");
             windowOpenPack = GameObject.Find("Canvas/OpenPackWindow");
             windowPurchaceConfirmation = GameObject.Find("Canvas/PurchaceConfirmation");
-
             coinsGameText = GameObject.Find("Canvas/InventoryMenu/Balance In Game/Text").GetComponent<Text>();
             packsGameText = GameObject.Find("Canvas/InventoryMenu/Packs  In Game/Background/Text").GetComponent<Text>();
-            
+            coinsWalletText = GameObject.Find("Canvas/BalanceCounter/Text").GetComponent<Text>();
             worldGenerator = GetComponent<WorldGenerator>();
 
-            coinsWalletText = GameObject.Find("Canvas/BalanceCounter/Text").GetComponent<Text>();
-            string balance = await Web3Manager.getBalance();
-            print("balance " + balance + " from " + PlayerPrefs.GetString("Account"));
-            walletCoins = float.Parse(balance);
+            user = new User();
+
+            getBalance();
+
         }
+
     }
+
 
     void Update()
     {
@@ -139,13 +137,54 @@ public class GameManager : MonoBehaviour
                     temp.transform.parent = GameObject.Find("Plants").transform;
 
                     // Change row
-                    lastRowSeedSelected.GetComponent<SeedRow>().seed.planted = true;
                     lastRowSeedSelected.transform.Find("Plant Button").GetComponent<Image>().enabled = false;
                     lastRowSeedSelected.transform.Find("Remove Button").GetComponent<Image>().enabled = true;
+
+                    // Update States
+                    lastRowSeedSelected.GetComponent<SeedRow>().seed.state = "{x:" + coords.x + ",y:" + coords.y + ",sOrder:" + coords.y * -1 + "}";
+                    selectedTile.state = TerrainState.full;
                 }
                 resetCursor();
             }
         }
+    }
+
+
+    public void placePreviousPlantedSeeds(SeedRow selectedRow, int x, int y, int sortingOrder)
+    {
+
+        // Get selected tile
+        Vector3Int coords = new Vector3Int(x, y, 0);
+        Terrain selectedTile = worldGenerator.map[coords.x, coords.y];
+
+        if (selectedTile.state == TerrainState.empty)
+        {
+            // Get coords
+            Vector3Int pos = new Vector3Int(coords.x, coords.y, 0);
+            Vector3 finalPos = worldGenerator.tileMap.GetCellCenterWorld(pos);
+            finalPos.y += 0.5f;
+
+            // Create plant
+            GameObject temp = Instantiate(plantPrefab, finalPos, Quaternion.identity);
+            temp.GetComponent<Plant>().row = selectedRow;
+            temp.GetComponent<SpriteRenderer>().sortingOrder = sortingOrder;
+            temp.transform.parent = GameObject.Find("Plants").transform;
+
+            // Change row
+            selectedRow.transform.Find("Plant Button").GetComponent<Image>().enabled = false;
+            selectedRow.transform.Find("Remove Button").GetComponent<Image>().enabled = true;
+
+            // Update States
+            // lastRowSeedSelected.GetComponent<SeedRow>().seed.state = "";
+            selectedTile.state = TerrainState.full;
+        }
+    }
+
+
+    async void getBalance()
+    {
+        string balance = await Web3Manager.getBalance();
+        walletCoins = float.Parse(balance);
     }
 
 
@@ -236,21 +275,29 @@ public class GameManager : MonoBehaviour
     {
         foreach (LootLockerInventory item in inventory)
         {
-            addSeedToInventory(item.asset);
+            addSeedToInventory(item);
         }
     }
 
 
-    private void addSeedToInventory(LootLockerCommonAsset asset)
+    private void addSeedToInventory(LootLockerInventory item)
     {
-        Seed seed = getSeedFromAsset(asset);
+        Seed seed = getSeedFromAsset(item.asset, item.instance_id);
+
+        if (seed != null)
+            addRowToInventory(seed);
+    }
+
+    private void addSeedToInventory(LootLockerRewardObject item)
+    {
+        Seed seed = getSeedFromAsset(item.asset, item.instance_id);
 
         if (seed != null)
             addRowToInventory(seed);
     }
 
 
-    private Seed getSeedFromAsset(LootLockerCommonAsset asset)
+    private Seed getSeedFromAsset(LootLockerCommonAsset asset, int instanceId)
     {
 
         BaseSeed baseSeed = Utils.getBaseSeedById(asset.id);
@@ -263,14 +310,14 @@ public class GameManager : MonoBehaviour
 
         foreach (var data in asset.storage)
         {
-            if (data.key == "Speed")
+            if (data.key == "speed")
                 speed = float.Parse(data.value);
 
-            if (data.key == "Value")
+            if (data.key == "value")
                 value = float.Parse(data.value);
         }
 
-        Seed seed = new Seed(asset.id, baseSeed, value, speed);
+        Seed seed = new Seed(instanceId, baseSeed, value, speed);
         return seed;
     }
 
@@ -312,7 +359,7 @@ public class GameManager : MonoBehaviour
 
                 obj.GetComponent<Pack>().reward = Utils.getBaseSeedById(reward.asset.id);
 
-                addSeedToInventory(reward.asset);
+                addSeedToInventory(reward);
 
             });
 
@@ -352,16 +399,16 @@ public class GameManager : MonoBehaviour
     {
 
         // Remove plant from the game
-        int id = obj.GetComponent<SeedRow>().seed.id;
+        int id = obj.GetComponent<SeedRow>().seed.instanceId;
         foreach (Transform child in GameObject.Find("Plants").transform) 
         {
             Plant plant = child.GetComponent<Plant>();
-            if (plant.row.seed.id == id) 
+            if (plant.row.seed.instanceId == id) 
             {
                 // Remove
                 Destroy(child.gameObject);
 
-                obj.GetComponent<SeedRow>().seed.planted = false;
+                obj.GetComponent<SeedRow>().seed.state = "stored";
                 obj.transform.Find("Plant Button").GetComponent<Image>().enabled = true;
                 obj.transform.Find("Remove Button").GetComponent<Image>().enabled = false;
 

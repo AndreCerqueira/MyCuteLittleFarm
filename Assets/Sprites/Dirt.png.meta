@@ -1,52 +1,7 @@
 fileFormatVersion: 2
 guid: 7019f8fffcc2dd442a550b0ec679d209
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -8275502208090371910
-    second: Dirt_0
-  - first:
-      213: 1412778643854539469
-    second: Dirt_1
-  - first:
-      213: -1278900557311105747
-    second: Dirt_2
-  - first:
-      213: 8641727722977497643
-    second: Dirt_3
-  - first:
-      213: -5696172171868935861
-    second: Dirt_4
-  - first:
-      213: 6680675988988378581
-    second: Dirt_5
-  - first:
-      213: 7824842593332555073
-    second: Dirt_6
-  - first:
-      213: -4410089191414829743
-    second: Dirt_7
-  - first:
-      213: -2411247445559563415
-    second: Dirt_8
-  - first:
-      213: -4685391132033899694
-    second: Dirt_9
-  - first:
-      213: 1018790119610574547
-    second: Dirt_10
-  - first:
-      213: 3489988067640147366
-    second: Dirt_11
-  - first:
-      213: 3561750101690788383
-    second: Dirt_12
-  - first:
-      213: 1229114862393131176
-    second: Dirt_13
-  - first:
-      213: -978763445766528800
-    second: Dirt_14
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -134,6 +89,30 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -152,19 +131,19 @@ TextureImporter:
       name: Dirt_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 136
+        x: 12
+        y: 204
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ab800d45692872d80800000000000000
-      internalID: -8275502208090371910
+      spriteID: f79bedce239bed04096c5689689688ce
+      internalID: -1649375681
       vertices: []
       indices: 
       edges: []
@@ -173,19 +152,19 @@ TextureImporter:
       name: Dirt_1
       rect:
         serializedVersion: 2
-        x: 68
-        y: 136
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 96
+        y: 188
+        width: 72
+        height: 72
+      alignment: 9
+      pivot: {x: 0.56, y: 0.44}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: dca353df0b23b9310800000000000000
-      internalID: 1412778643854539469
+      spriteID: 06aa0e992084d6046a2d229dd34b5ba6
+      internalID: 1437320977
       vertices: []
       indices: 
       edges: []
@@ -194,19 +173,19 @@ TextureImporter:
       name: Dirt_2
       rect:
         serializedVersion: 2
-        x: 136
-        y: 136
+        x: 172
+        y: 188
         width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 72
+      alignment: 9
+      pivot: {x: 0.5, y: 0.44}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d252c6218be604ee0800000000000000
-      internalID: -1278900557311105747
+      spriteID: fa7a3b5d7dd49fb489b45e3266f66c72
+      internalID: -1021401110
       vertices: []
       indices: 
       edges: []
@@ -215,19 +194,19 @@ TextureImporter:
       name: Dirt_3
       rect:
         serializedVersion: 2
-        x: 204
-        y: 136
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 240
+        y: 188
+        width: 72
+        height: 72
+      alignment: 9
+      pivot: {x: 0.44, y: 0.44}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b2218b504959de770800000000000000
-      internalID: 8641727722977497643
+      spriteID: b9c0255e8aff7a54c9967bdecd19f960
+      internalID: -1590915849
       vertices: []
       indices: 
       edges: []
@@ -236,19 +215,19 @@ TextureImporter:
       name: Dirt_4
       rect:
         serializedVersion: 2
-        x: 272
-        y: 136
-        width: 64
-        height: 64
+        x: 332
+        y: 196
+        width: 80
+        height: 80
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b49694cd69123f0b0800000000000000
-      internalID: -5696172171868935861
+      spriteID: 2dec3c0b70d49204ca55cf4408b6ae88
+      internalID: -571908703
       vertices: []
       indices: 
       edges: []
@@ -257,19 +236,19 @@ TextureImporter:
       name: Dirt_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 68
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 4
+        y: 116
+        width: 80
+        height: 72
+      alignment: 9
+      pivot: {x: 0.5, y: 0.44}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 5dd322f8a6786bc50800000000000000
-      internalID: 6680675988988378581
+      spriteID: ca5682f23a4b5b445a053d7a2dcdcae1
+      internalID: 1593396716
       vertices: []
       indices: 
       edges: []
@@ -278,19 +257,19 @@ TextureImporter:
       name: Dirt_6
       rect:
         serializedVersion: 2
-        x: 68
-        y: 68
-        width: 64
+        x: 96
+        y: 120
+        width: 72
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.56, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 14deeee71ec679c60800000000000000
-      internalID: 7824842593332555073
+      spriteID: 29f08d456dd344547903745dfdb0be6f
+      internalID: 25432832
       vertices: []
       indices: 
       edges: []
@@ -299,19 +278,19 @@ TextureImporter:
       name: Dirt_7
       rect:
         serializedVersion: 2
-        x: 136
-        y: 68
+        x: 172
+        y: 120
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 15dededfe373cc2c0800000000000000
-      internalID: -4410089191414829743
+      spriteID: 126b2b5b8f1fc9c41acb99c0e666af20
+      internalID: 243012702
       vertices: []
       indices: 
       edges: []
@@ -320,19 +299,19 @@ TextureImporter:
       name: Dirt_8
       rect:
         serializedVersion: 2
-        x: 204
-        y: 68
-        width: 64
+        x: 240
+        y: 120
+        width: 72
         height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 9
+      pivot: {x: 0.44, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 96baadd3937898ed0800000000000000
-      internalID: -2411247445559563415
+      spriteID: fb90756ef6e9dd74ababf01bd3996ca7
+      internalID: -1467286493
       vertices: []
       indices: 
       edges: []
@@ -341,19 +320,19 @@ TextureImporter:
       name: Dirt_9
       rect:
         serializedVersion: 2
-        x: 272
-        y: 68
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 340
+        y: 108
+        width: 72
+        height: 80
+      alignment: 9
+      pivot: {x: 0.44, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 253aa55f6952afeb0800000000000000
-      internalID: -4685391132033899694
+      spriteID: 08486cc743639774eacd90792fa4cad9
+      internalID: 243463152
       vertices: []
       indices: 
       edges: []
@@ -362,19 +341,19 @@ TextureImporter:
       name: Dirt_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 4
+        y: 24
+        width: 80
+        height: 72
+      alignment: 9
+      pivot: {x: 0.5, y: 0.56}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3d6e01c4738732e00800000000000000
-      internalID: 1018790119610574547
+      spriteID: 85351d5a062b64a4e87f419b738f512a
+      internalID: -1603107063
       vertices: []
       indices: 
       edges: []
@@ -383,19 +362,19 @@ TextureImporter:
       name: Dirt_11
       rect:
         serializedVersion: 2
-        x: 68
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 96
+        y: 44
+        width: 72
+        height: 72
+      alignment: 9
+      pivot: {x: 0.56, y: 0.56}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6adfa0228adee6030800000000000000
-      internalID: 3489988067640147366
+      spriteID: 10c33851d8ae3e44ea29a847d03db8e8
+      internalID: -574754341
       vertices: []
       indices: 
       edges: []
@@ -404,19 +383,19 @@ TextureImporter:
       name: Dirt_12
       rect:
         serializedVersion: 2
-        x: 136
-        y: 0
+        x: 172
+        y: 44
         width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        height: 72
+      alignment: 9
+      pivot: {x: 0.5, y: 0.56}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1aadf5b8d0ed6130800000000000000
-      internalID: 3561750101690788383
+      spriteID: e846f5d684d6f7546b1f0d17fdf905ca
+      internalID: 27046991
       vertices: []
       indices: 
       edges: []
@@ -425,19 +404,19 @@ TextureImporter:
       name: Dirt_13
       rect:
         serializedVersion: 2
-        x: 204
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 240
+        y: 44
+        width: 72
+        height: 72
+      alignment: 9
+      pivot: {x: 0.44, y: 0.56}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8a088198471be0110800000000000000
-      internalID: 1229114862393131176
+      spriteID: cf77fa7d848ac6a45bef9af3a6e0b6d7
+      internalID: -1694463257
       vertices: []
       indices: 
       edges: []
@@ -446,19 +425,19 @@ TextureImporter:
       name: Dirt_14
       rect:
         serializedVersion: 2
-        x: 272
-        y: 0
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        x: 336
+        y: 20
+        width: 72
+        height: 80
+      alignment: 9
+      pivot: {x: 0.56, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0e0e2ffe4dbba62f0800000000000000
-      internalID: -978763445766528800
+      spriteID: 023fccd90efffa149857e06cb230d4cd
+      internalID: -1223486050
       vertices: []
       indices: 
       edges: []
@@ -474,21 +453,21 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Dirt_0: -8275502208090371910
-      Dirt_3: 8641727722977497643
-      Dirt_7: -4410089191414829743
-      Dirt_8: -2411247445559563415
-      Dirt_12: 3561750101690788383
-      Dirt_10: 1018790119610574547
-      Dirt_2: -1278900557311105747
-      Dirt_4: -5696172171868935861
-      Dirt_6: 7824842593332555073
-      Dirt_9: -4685391132033899694
-      Dirt_1: 1412778643854539469
-      Dirt_5: 6680675988988378581
-      Dirt_13: 1229114862393131176
-      Dirt_11: 3489988067640147366
-      Dirt_14: -978763445766528800
+      Dirt_0: -1649375681
+      Dirt_3: -1590915849
+      Dirt_7: 243012702
+      Dirt_8: -1467286493
+      Dirt_12: 27046991
+      Dirt_10: -1603107063
+      Dirt_2: -1021401110
+      Dirt_4: -571908703
+      Dirt_6: 25432832
+      Dirt_9: 243463152
+      Dirt_1: 1437320977
+      Dirt_5: 1593396716
+      Dirt_13: -1694463257
+      Dirt_11: -574754341
+      Dirt_14: -1223486050
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
