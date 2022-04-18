@@ -13,30 +13,30 @@ public class Inventory
     {
         gameManager = GameObject.FindObjectOfType<GameManager>();
 
-        getInventory();
-        getGameCoins((coins) => {
+        GetInventory();
+        GetGameCoins((coins) => {
             Debug.Log("coins " + coins);
         });
 
-        getPacks((packs) => {
+        GetPacks((packs) => {
             Debug.Log("packs " + packs);
         });
     }
 
 
-    public void getInventory()
+    public void GetInventory()
     {
         LootLockerSDKManager.GetInventory((response) =>
         {
             if (response.success)
             {
-                gameManager.displayInventory(response.inventory);
+                gameManager.DisplayInventory(response.inventory);
             }
         });
     }
 
 
-    public void getGameCoins(Action<float> callback)
+    public void GetGameCoins(Action<float> callback)
     {
         LootLockerSDKManager.GetSingleKeyPersistentStorage("coins", (response) =>
         {
@@ -60,7 +60,7 @@ public class Inventory
     }
 
 
-    public void updateGameCoins(string value)
+    public void UpdateGameCoins(string value)
     {
         LootLockerSDKManager.UpdateOrCreateKeyValue("coins", value, (getPersistentStoragResponse) =>
         {
@@ -76,7 +76,7 @@ public class Inventory
     }
 
 
-    public void getPacks(Action<int> callback)
+    public void GetPacks(Action<int> callback)
     {
         LootLockerSDKManager.GetInventory((response) =>
         {
@@ -95,7 +95,7 @@ public class Inventory
     }
 
 
-    public void addPack(string coins)
+    public void AddPack(string coins)
     {
         LootLockerSDKManager.TriggeringAnEvent("getPack", (response) =>
         {
@@ -114,14 +114,14 @@ public class Inventory
     }
 
 
-    public void openPack(Action<LootLockerRewardObject> callback)
+    public void OpenPack(Action<LootLockerRewardObject> callback)
     {
-        getPackInstanceID((id) => {
+        GetPackInstanceID((id) => {
             LootLockerSDKManager.OpenALootBoxForAssetInstances(id, (response) =>
             {
                 if (response.success)
                 {
-                    getPackReward((reward) => {
+                    GetPackReward((reward) => {
                         callback(reward);
                     });
                 }
@@ -134,7 +134,7 @@ public class Inventory
     }
 
 
-    private void getPackInstanceID(Action<int> callback)
+    private void GetPackInstanceID(Action<int> callback)
     {
         LootLockerSDKManager.GetInventory((response) =>
         {
@@ -153,14 +153,14 @@ public class Inventory
     }
 
 
-    private void getPackReward(Action<LootLockerRewardObject> callback)
+    private void GetPackReward(Action<LootLockerRewardObject> callback)
     {
         LootLockerSDKManager.GetAssetNotification((response) =>
         {
             if (response.success && response.objects != null)
             {
                 var item = response.objects[0];
-                setAllSeedKeyPairValues(item.instance_id, () =>
+                SetAllSeedKeyPairValues(item.instance_id, () =>
                 {
                     callback(item);
                 });
@@ -169,7 +169,7 @@ public class Inventory
     }
 
 
-    private void setAllSeedKeyPairValues(int id, Action callback)
+    private void SetAllSeedKeyPairValues(int id, Action callback)
     {
         LootLockerSDKManager.CreateKeyValuePairForAssetInstances(id, "state", "stored", (response) =>
         {

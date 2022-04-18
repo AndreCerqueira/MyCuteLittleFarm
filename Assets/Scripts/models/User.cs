@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class User
 {
-
     // Variables
     string id;
     public int inGamePacks;
@@ -17,35 +17,36 @@ public class User
     public User ()
     {
 
-        getTerrains();
+        GetTerrains();
 
-        gameManager = GameObject.FindObjectOfType<GameManager>();
+        if (SceneManager.GetActiveScene().name == "MainScene")
+            gameManager = GameObject.FindObjectOfType<GameManager>();
 
         id = "";
 
     }
 
 
-    public void loadUserData()
+    public void LoadUserData()
     {
-        getInventory();
-        getUserDbData();
+        GetInventory();
+        GetUserDbData();
     }
 
 
-    private void getInventory()
+    private void GetInventory()
     {
         inventory = new Inventory();
     }
 
 
-    private void getUserDbData()
+    private void GetUserDbData()
     {
-        inventory.getGameCoins((coins) => {
+        inventory.GetGameCoins((coins) => {
             gameManager.inGameCoins = coins;
         });
 
-        inventory.getPacks((packs) => {
+        inventory.GetPacks((packs) => {
             gameManager.inGamePacks = packs;
         });
 
@@ -53,39 +54,22 @@ public class User
     }
 
 
-    void getTerrains() 
+    void GetTerrains() 
     {
         // Default free terrains
         
-        terrains = new List<Terrain>();/*
-        terrains.Add(new Terrain(1, 8, 12, TerrainType.grassLeftCornerSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 12, 12, TerrainType.grassRightCornerSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 9, 12, TerrainType.grassTopSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 10, 12, TerrainType.grassTopSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 11, 12, TerrainType.grassTopSoil, TerrainState.wild));*/
+        terrains = new List<Terrain>();
 
         // Available Ones
-        terrains.Add(new Terrain(1, 9, 11, TerrainType.topLeftCorner, TerrainState.empty));
-        terrains.Add(new Terrain(1, 10, 11, TerrainType.top, TerrainState.empty));
-        terrains.Add(new Terrain(1, 11, 11, TerrainType.topRightCorner, TerrainState.empty));
-        terrains.Add(new Terrain(1, 9, 10, TerrainType.left, TerrainState.empty));
-        terrains.Add(new Terrain(1, 10, 10, TerrainType.soil, TerrainState.empty));
-        terrains.Add(new Terrain(1, 11, 10, TerrainType.right, TerrainState.empty));
-        terrains.Add(new Terrain(1, 9, 9, TerrainType.bottomLeftCorner, TerrainState.empty));
-        terrains.Add(new Terrain(1, 10, 9, TerrainType.bottom, TerrainState.empty));
-        terrains.Add(new Terrain(1, 11, 9, TerrainType.bottomRightCorner, TerrainState.empty));
-        /*
-        terrains.Add(new Terrain(1, 9, 9, TerrainType.soilBottom, TerrainState.empty));
-        terrains.Add(new Terrain(1, 10, 9, TerrainType.soilBottom, TerrainState.empty));
-        terrains.Add(new Terrain(1, 11, 9, TerrainType.soilBottom, TerrainState.empty));
-
-        
-        terrains.Add(new Terrain(1, 8, 9, TerrainType.grassLeftSideSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 12, 9, TerrainType.grassRightSideSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 8, 11, TerrainType.grassLeftCountinuousSideSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 12, 11, TerrainType.grassRighCountinuoustSideSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 8, 10, TerrainType.grassLeftCountinuousSideSoil, TerrainState.wild));
-        terrains.Add(new Terrain(1, 12, 10, TerrainType.grassRighCountinuoustSideSoil, TerrainState.wild));*/
+        terrains.Add(new Terrain("1", 9, 11));
+        terrains.Add(new Terrain("2", 10, 11));
+        terrains.Add(new Terrain("3", 11, 11));
+        terrains.Add(new Terrain("4", 9, 10));
+        terrains.Add(new Terrain("5", 10, 10));
+        terrains.Add(new Terrain("6", 11, 10));
+        terrains.Add(new Terrain("7", 9, 9));
+        terrains.Add(new Terrain("8", 10, 9));
+        terrains.Add(new Terrain("9", 11, 9));
 
     }
 

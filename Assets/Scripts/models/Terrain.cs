@@ -3,50 +3,30 @@ using System.Collections.Generic;
 
 public class Terrain
 {
-    public int id;
-    public int x, y;
-    public TerrainType type;
-    public TerrainState state;
+    public string id;
+    public int? x, y;
+    public string content;
 
-    public Terrain(int _id, int _x, int _y, TerrainType _type, TerrainState _state)
+    public Terrain()
     {
-        id = _id;
-        x = _x;
-        y = _y;
-        type = _type;
-        state = _state;
     }
-}
 
-public enum TerrainState
-{
-    wild,
-    empty,
-    full
-}
 
-public enum TerrainType
-{
-    grass,
-    soil,
+    public Terrain(string id, string x, string y)
+    {
+        this.id = id;
+        this.x = (x == "null") ? null : int.Parse(x);
+        this.y = (y == "null") ? null : int.Parse(y);
+        this.content = "null";
+    }
 
-    bottom,
-    top,
 
-    left,
-    right,
+    public Terrain(string id, int x, int y)
+    {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+        this.content = "null";
+    }
 
-    bottomLeftCorner,
-    bottomRightCorner,
-
-    topLeftCorner,
-    topRightCorner,
-
-    bottomWithBorders,
-    topWithBorders,
-
-    leftWithBorders,
-    rightWithBorders,
-
-    soilWithFullBorders
 }

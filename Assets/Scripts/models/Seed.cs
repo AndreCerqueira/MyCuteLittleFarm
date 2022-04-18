@@ -80,6 +80,10 @@ public class Seed
         }
     }
 
+    public Seed()
+    {
+
+    }
 
     public Seed(int _id, BaseSeed _baseSeed, float _value, float _growthSpeed)
     {
@@ -98,40 +102,7 @@ public class Seed
     }
 
 
-    public void placeSeed(SeedRow selectedRow)
-    {
-        GameManager gameManager = GameObject.FindObjectOfType<GameManager>();
-
-        LootLockerSDKManager.GetAllKeyValuePairsToAnInstance(instanceId, (response) =>
-        {
-            if (response.success && response.storage.Length > 0)
-            {
-                foreach (var item in response.storage)
-                {
-                    if (item.key == "state")
-                    {
-
-                        _state = item.value;
-
-                        if (item.value != "stored")
-                        {
-                            int x = int.Parse(item.value.Split("x:")[1].Split(",")[0]);
-                            int y = int.Parse(item.value.Split("y:")[1].Split(",")[0]);
-                            int sOrder = int.Parse(item.value.Split("sOrder:")[1].Split("}")[0]);
-
-                            gameManager.placePreviousPlantedSeeds(selectedRow, x, y, sOrder);
-                        }
-
-                    }
-
-                }
-            }
-        });
-
-    }
-
-
-    public void getProgressFromLootLocker(Action<int, int> callback)
+    public void GetProgressFromLootLocker(Action<int, int> callback)
     {
         LootLockerSDKManager.GetAllKeyValuePairsToAnInstance(instanceId, (response) =>
         {
@@ -160,7 +131,7 @@ public class Seed
     }
 
 
-    public void setProgressIntoLootLocker()
+    public void SetProgressIntoLootLocker()
     {
         Dictionary<string, string> multipleTestKeys = new Dictionary<string, string>();
 

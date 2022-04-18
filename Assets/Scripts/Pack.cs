@@ -7,7 +7,7 @@ public class Pack : MonoBehaviour
 {
     public BaseSeed reward;
 
-    public void getSeed()
+    public void GetSeed()
     {
         Image image = transform.Find("Image").GetComponent<Image>();
         image.enabled = true;

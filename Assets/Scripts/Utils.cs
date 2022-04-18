@@ -16,7 +16,7 @@ public enum Rarity
 public class Utils : MonoBehaviour
 {
 
-    public static Texture2D textureFromSprite(Sprite sprite)
+    public static Texture2D TextureFromSprite(Sprite sprite)
     {
         if (sprite.rect.width != sprite.texture.width)
         {
@@ -34,7 +34,7 @@ public class Utils : MonoBehaviour
     }
 
 
-    public static BaseSeed getBaseSeedById(int id)
+    public static BaseSeed GetBaseSeedById(int id)
     {
         GameManager gameManager = FindObjectOfType<GameManager>();
         BaseSeed[] seeds = gameManager.baseSeeds;

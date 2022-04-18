@@ -2,14 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Plant : MonoBehaviour
+public class Plant : TerrainContent
 {
     // Variables
-    public SeedRow row;
-    SpriteRenderer spriteRenderer;
     GameManager gameManager;
 
-    [SerializeField] Sprite[] fases;
     int _currentFase = 0;
     int finalFase;
 
@@ -26,7 +23,7 @@ public class Plant : MonoBehaviour
             if (currentFase > finalFase)
             {
                 currentFase = 0;
-                harvest();
+                Harvest();
             }
 
             spriteRenderer.sprite = fases[currentFase];
@@ -35,16 +32,16 @@ public class Plant : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
+
         // Set data
         gameManager = FindObjectOfType<GameManager>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        fases = row.seed.animation;
         spriteRenderer.sprite = fases[currentFase];
         finalFase = fases.Length - 1;
 
-        StartCoroutine(growth());
+        StartCoroutine(Growth());
     }
 
 
@@ -57,22 +54,22 @@ public class Plant : MonoBehaviour
     }
 
 
-    private void harvest()
+    private void Harvest()
     {
-        gameManager.addCoin(row.seed.value);
-        getXp();
-        StartCoroutine(growth());
+        gameManager.AddCoin(row.seed.value);
+        GetXp();
+        StartCoroutine(Growth());
     }
 
 
-    private void getXp()
+    private void GetXp()
     {
         row.xp += 10;
-        row.seed.setProgressIntoLootLocker();
+        row.seed.SetProgressIntoLootLocker();
     }
 
 
-    IEnumerator growth()
+    IEnumerator Growth()
     {
         while (currentFase < finalFase)
         {

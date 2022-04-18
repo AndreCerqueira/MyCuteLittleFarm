@@ -22,7 +22,6 @@ public class GameManager : MonoBehaviour
     bool packOpened;
 
     // Other Objects
-    public WorldGenerator worldGenerator;
     public BaseSeed[] baseSeeds;
     Text coinsWalletText;
     Text coinsGameText;
@@ -36,7 +35,6 @@ public class GameManager : MonoBehaviour
 
     // User variables
     public User user;
-    bool plantMode;
 
     public int inGamePacks
     {
@@ -80,10 +78,10 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void addCoin(float amount)
+    public void AddCoin(float amount)
     {
         inGameCoins += amount;
-        user.inventory.updateGameCoins(inGameCoins.ToString());
+        user.inventory.UpdateGameCoins(inGameCoins.ToString());
     }
 
 
@@ -101,89 +99,19 @@ public class GameManager : MonoBehaviour
             coinsGameText = GameObject.Find("Canvas/InventoryMenu/Balance In Game/Text").GetComponent<Text>();
             packsGameText = GameObject.Find("Canvas/InventoryMenu/Packs  In Game/Background/Text").GetComponent<Text>();
             coinsWalletText = GameObject.Find("Canvas/BalanceCounter/Text").GetComponent<Text>();
-            worldGenerator = GetComponent<WorldGenerator>();
 
             user = new User();
 
-            getBalance();
+            GetBalance();
 
         }
 
     }
 
 
-    void Update()
+    async void GetBalance()
     {
-        if (plantMode)
-        {
-            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
-            {
-                // Get selected tile
-                Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                Vector3Int coords = worldGenerator.tileMap.WorldToCell(mouseWorldPos);
-                Terrain selectedTile = worldGenerator.map[coords.x, coords.y];
-
-                if (selectedTile.state == TerrainState.empty)
-                {
-                    // Get coords
-                    Vector3Int pos = new Vector3Int(coords.x, coords.y, 0);
-                    Vector3 finalPos = worldGenerator.tileMap.GetCellCenterWorld(pos);
-                    finalPos.y += 0.5f;
-
-                    // Create plant
-                    GameObject temp = Instantiate(plantPrefab, finalPos, Quaternion.identity);
-                    temp.GetComponent<Plant>().row = lastRowSeedSelected.GetComponent<SeedRow>();
-                    temp.GetComponent<SpriteRenderer>().sortingOrder = coords.y * -1;
-                    temp.transform.parent = GameObject.Find("Plants").transform;
-
-                    // Change row
-                    lastRowSeedSelected.transform.Find("Plant Button").GetComponent<Image>().enabled = false;
-                    lastRowSeedSelected.transform.Find("Remove Button").GetComponent<Image>().enabled = true;
-
-                    // Update States
-                    lastRowSeedSelected.GetComponent<SeedRow>().seed.state = "{x:" + coords.x + ",y:" + coords.y + ",sOrder:" + coords.y * -1 + "}";
-                    selectedTile.state = TerrainState.full;
-                }
-                resetCursor();
-            }
-        }
-    }
-
-
-    public void placePreviousPlantedSeeds(SeedRow selectedRow, int x, int y, int sortingOrder)
-    {
-
-        // Get selected tile
-        Vector3Int coords = new Vector3Int(x, y, 0);
-        Terrain selectedTile = worldGenerator.map[coords.x, coords.y];
-
-        if (selectedTile.state == TerrainState.empty)
-        {
-            // Get coords
-            Vector3Int pos = new Vector3Int(coords.x, coords.y, 0);
-            Vector3 finalPos = worldGenerator.tileMap.GetCellCenterWorld(pos);
-            finalPos.y += 0.5f;
-
-            // Create plant
-            GameObject temp = Instantiate(plantPrefab, finalPos, Quaternion.identity);
-            temp.GetComponent<Plant>().row = selectedRow;
-            temp.GetComponent<SpriteRenderer>().sortingOrder = sortingOrder;
-            temp.transform.parent = GameObject.Find("Plants").transform;
-
-            // Change row
-            selectedRow.transform.Find("Plant Button").GetComponent<Image>().enabled = false;
-            selectedRow.transform.Find("Remove Button").GetComponent<Image>().enabled = true;
-
-            // Update States
-            // lastRowSeedSelected.GetComponent<SeedRow>().seed.state = "";
-            selectedTile.state = TerrainState.full;
-        }
-    }
-
-
-    async void getBalance()
-    {
-        string balance = await Web3Manager.getBalance();
+        string balance = await Web3Manager.GetBalance();
         walletCoins = float.Parse(balance);
     }
 
@@ -271,36 +199,36 @@ public class GameManager : MonoBehaviour
 
     // Other Functionalities
 
-    public void displayInventory(LootLockerInventory[] inventory)
+    public void DisplayInventory(LootLockerInventory[] inventory)
     {
         foreach (LootLockerInventory item in inventory)
         {
-            addSeedToInventory(item);
+            AddSeedToInventory(item);
         }
     }
 
 
-    private void addSeedToInventory(LootLockerInventory item)
+    private void AddSeedToInventory(LootLockerInventory item)
     {
-        Seed seed = getSeedFromAsset(item.asset, item.instance_id);
+        Seed seed = GetSeedFromAsset(item.asset, item.instance_id);
 
         if (seed != null)
-            addRowToInventory(seed);
+            AddRowToInventory(seed);
     }
 
-    private void addSeedToInventory(LootLockerRewardObject item)
+    private void AddSeedToInventory(LootLockerRewardObject item)
     {
-        Seed seed = getSeedFromAsset(item.asset, item.instance_id);
+        Seed seed = GetSeedFromAsset(item.asset, item.instance_id);
 
         if (seed != null)
-            addRowToInventory(seed);
+            AddRowToInventory(seed);
     }
 
 
-    private Seed getSeedFromAsset(LootLockerCommonAsset asset, int instanceId)
+    private Seed GetSeedFromAsset(LootLockerCommonAsset asset, int instanceId)
     {
 
-        BaseSeed baseSeed = Utils.getBaseSeedById(asset.id);
+        BaseSeed baseSeed = Utils.GetBaseSeedById(asset.id);
 
         if (baseSeed == null)
             return null;
@@ -322,21 +250,21 @@ public class GameManager : MonoBehaviour
     }
 
 
-    private void addRowToInventory(Seed seed)
+    private void AddRowToInventory(Seed seed)
     {
         GameObject row = Instantiate(seedRowPrefab, new Vector3(0, 0, 0), Quaternion.identity);
         row.GetComponent<SeedRow>().seed = seed;
-        row.GetComponent<SeedRow>().setData();
+        row.GetComponent<SeedRow>().SetData();
         row.transform.SetParent(seedListView.transform);
         row.transform.localScale = new Vector3(1, 1, 1);
     }
 
 
-    public void buyPack(int price = 10)
+    public void BuyPack(int price = 10)
     {
         Web3Manager.TransferERC20(()=> {
 
-            user.inventory.addPack(inGameCoins.ToString());
+            user.inventory.AddPack(inGameCoins.ToString());
             inGamePacks++;
 
         });
@@ -344,22 +272,22 @@ public class GameManager : MonoBehaviour
 
 
     GameObject lastPackOpened;
-    public void openPack(GameObject obj) 
+    public void OpenPack(GameObject obj) 
     {
 
         if (!packOpened)
         {
 
-            user.inventory.openPack((reward) => {
+            user.inventory.OpenPack((reward) => {
 
                 obj.GetComponent<Animator>().SetTrigger("play");
                 lastPackOpened = obj;
                 packOpened = true;
                 inGamePacks--;
 
-                obj.GetComponent<Pack>().reward = Utils.getBaseSeedById(reward.asset.id);
+                obj.GetComponent<Pack>().reward = Utils.GetBaseSeedById(reward.asset.id);
 
-                addSeedToInventory(reward);
+                AddSeedToInventory(reward);
 
             });
 
@@ -372,50 +300,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    GameObject lastRowSeedSelected;
-    public void plantSeed(GameObject obj)
+    public void OpenBuildScene()
     {
-
-        closeMyFarmButton();
-
-        lastRowSeedSelected = obj;
-
-        Sprite sprite = obj.transform.Find("Seed Icon").GetComponent<Image>().sprite;
-        Texture2D texture2D = Utils.textureFromSprite(sprite);
-
-        Cursor.SetCursor(texture2D, Vector2.zero, CursorMode.ForceSoftware);
-        plantMode = true;
-    }
-
-
-    public void resetCursor()
-    {
-        Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-        plantMode = false;
-    }
-
-
-    public void digSeed(GameObject obj)
-    {
-
-        // Remove plant from the game
-        int id = obj.GetComponent<SeedRow>().seed.instanceId;
-        foreach (Transform child in GameObject.Find("Plants").transform) 
-        {
-            Plant plant = child.GetComponent<Plant>();
-            if (plant.row.seed.instanceId == id) 
-            {
-                // Remove
-                Destroy(child.gameObject);
-
-                obj.GetComponent<SeedRow>().seed.state = "stored";
-                obj.transform.Find("Plant Button").GetComponent<Image>().enabled = true;
-                obj.transform.Find("Remove Button").GetComponent<Image>().enabled = false;
-
-                break;
-            }
-        }
-
+        SceneManager.LoadScene("BuildScene");
     }
 
 
