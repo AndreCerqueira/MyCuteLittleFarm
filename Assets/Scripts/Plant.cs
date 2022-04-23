@@ -5,7 +5,7 @@ using UnityEngine;
 public class Plant : TerrainContent
 {
     // Variables
-    GameManager gameManager;
+    MainSceneManager mainManager;
 
     int _currentFase = 0;
     int finalFase;
@@ -37,7 +37,7 @@ public class Plant : TerrainContent
         base.Start();
 
         // Set data
-        gameManager = FindObjectOfType<GameManager>();
+        mainManager = FindObjectOfType<MainSceneManager>();
         spriteRenderer.sprite = fases[currentFase];
         finalFase = fases.Length - 1;
 
@@ -56,7 +56,7 @@ public class Plant : TerrainContent
 
     private void Harvest()
     {
-        gameManager.AddCoin(row.seed.value);
+        mainManager.AddCoin(row.seed.value);
         GetXp();
         StartCoroutine(Growth());
     }

@@ -10,26 +10,10 @@ public class SeedRow : SeedDisplay
     {
         base.Start();
 
-        GameManager gameManager;
-        gameManager = FindObjectOfType<GameManager>();
-
-        Button btnPlant = transform.Find("Plant Button").GetComponent<Button>();
-        //btnPlant.onClick.AddListener(delegate { gameManager.PlantSeed(gameObject); });
-
-        Button btnRemove = transform.Find("Remove Button").GetComponent<Button>();
-        //btnRemove.onClick.AddListener(delegate { gameManager.DigSeed(gameObject); });
-
         Button btnUpgrade = transform.Find("Upgrade Button").GetComponent<Button>();
         btnUpgrade.onClick.AddListener(delegate { UpgradeSeed(); });
 
-        /*
-        if (seed.state != "stored")
-        {
-            seed.PlaceSeed(this);
-        }*/
-
-        seed.GetProgressFromLootLocker((_xp, _level) =>
-        {
+        seed.GetProgressFromLootLocker((_xp, _level) => {
             xp = _xp;
             seed.level = _level;
         });
@@ -42,7 +26,7 @@ public class SeedRow : SeedDisplay
         if (seed.xp >= seed.maxXp) 
         {
             transform.Find("Upgrade Button").GetComponent<Button>().interactable = false;
-            // TODO seed.levelUp();
+            seed.levelUp();
             SetData();
         }
     }

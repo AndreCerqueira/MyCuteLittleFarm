@@ -40,7 +40,7 @@ public class Auth : MonoBehaviour
                 Debug.Log("session is valid, you can start a game session");
 
                 StartLootLockerSession(() => {
-                    SceneManager.LoadScene("BuildScene");
+                    SceneManager.LoadScene("MainScene");
                 });
 
             }

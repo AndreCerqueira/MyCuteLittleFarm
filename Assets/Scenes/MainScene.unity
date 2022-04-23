@@ -286,8 +286,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: closeMyFarmButton
         m_Mode: 1
         m_Arguments:
@@ -607,8 +607,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: closeInventoryButton
         m_Mode: 1
         m_Arguments:
@@ -1218,8 +1218,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: closeOpenPackWindow
         m_Mode: 1
         m_Arguments:
@@ -1429,8 +1429,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: openMyFarmButton
         m_Mode: 1
         m_Arguments:
@@ -1928,9 +1928,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: buyPack
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
+        m_MethodName: BuyPack
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2009,7 +2009,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 809873048}
-  m_RootOrder: 0
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!483693784 &480217210
 TilemapRenderer:
@@ -36080,10 +36080,14 @@ PrefabInstance:
     - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1799238792}
+      objectReference: {fileID: 1799238796}
     - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: openPack
+      value: OpenPack
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainSceneManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
@@ -36104,6 +36108,200 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3802584240477103809, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
   m_PrefabInstance: {fileID: 491167777}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &518052919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 518052920}
+  - component: {fileID: 518052922}
+  - component: {fileID: 518052921}
+  m_Layer: 0
+  m_Name: Tilemap Highlight
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &518052920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518052919}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 809873048}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!483693784 &518052921
+TilemapRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518052919}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 0
+  m_ReflectionProbeUsage: 0
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: -100
+  m_ChunkSize: {x: 32, y: 32, z: 32}
+  m_ChunkCullingBounds: {x: 0, y: 0, z: 0}
+  m_MaxChunkCount: 16
+  m_MaxFrameAge: 16
+  m_SortOrder: 0
+  m_Mode: 0
+  m_DetectChunkCullingBounds: 0
+  m_MaskInteraction: 0
+--- !u!1839735485 &518052922
+Tilemap:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 518052919}
+  m_Enabled: 1
+  m_Tiles: {}
+  m_AnimatedTiles: {}
+  m_TileAssetArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  m_TileSpriteArray:
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
+  m_TileMatrixArray:
+  - m_RefCount: 0
+    m_Data:
+      e00: 1e-45
+      e01: 0
+      e02: -1.6643015e+10
+      e03: -1.6643015e+10
+      e10: 0
+      e11: 0
+      e12: 4.71e-43
+      e13: 4.71e-43
+      e20: 460076540
+      e21: 1e-45
+      e22: 4.5201792e-29
+      e23: 4.7540905e-10
+      e30: 4.5905e-41
+      e31: 0
+      e32: 4.72e-43
+      e33: 4.75e-43
+  m_TileColorArray:
+  - m_RefCount: 0
+    m_Data: {r: -1.1393855e-19, g: -1.1393855e-19, b: -1.1393855e-19, a: -1.1393855e-19}
+  - m_RefCount: 0
+    m_Data: {r: 0, g: 0, b: 0, a: 0}
+  - m_RefCount: 0
+    m_Data: {r: 0, g: 0, b: 0, a: 0}
+  - m_RefCount: 0
+    m_Data: {r: 0, g: 0, b: 0, a: 0}
+  - m_RefCount: 0
+    m_Data: {r: 0, g: 0, b: 0, a: 0}
+  - m_RefCount: 0
+    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
+  - m_RefCount: 0
+    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
+  - m_RefCount: 0
+    m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
+  m_TileObjectToInstantiateArray: []
+  m_AnimationFrameRate: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Origin: {x: -11, y: -7, z: 0}
+  m_Size: {x: 29, y: 20, z: 1}
+  m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
+  m_TileOrientation: 0
+  m_TileOrientationMatrix:
+    e00: 1
+    e01: 0
+    e02: 0
+    e03: 0
+    e10: 0
+    e11: 1
+    e12: 0
+    e13: 0
+    e20: 0
+    e21: 0
+    e22: 1
+    e23: 0
+    e30: 0
+    e31: 0
+    e32: 0
+    e33: 1
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -36201,6 +36399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae46a1958d1aeaa499c15abc59df05f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  action: 0
 --- !u!1 &601303326
 GameObject:
   m_ObjectHideFlags: 0
@@ -36452,8 +36651,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: closeShopButton
         m_Mode: 1
         m_Arguments:
@@ -36768,19 +36967,19 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 0
+  m_Interactable: 1
   m_TargetGraphic: {fileID: 667499451}
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: openManageFarmScene
-        m_Mode: 1
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
+        m_MethodName: BuyTerrain
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 100
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -36907,7 +37106,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: closePurchaceConfirmationWindow
         m_Mode: 1
@@ -37247,8 +37446,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 480217209}
+  - {fileID: 518052920}
   - {fileID: 271374164}
+  - {fileID: 480217209}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -37265,10 +37465,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactible: 0
-  interactiveMap: {fileID: 0}
+  interactiveMap: {fileID: 518052922}
   pathMap: {fileID: 271374166}
-  hoverTile: {fileID: 0}
+  hoverTile: {fileID: 11400000, guid: 92ef7987dc60c12459a9600bf2baea4c, type: 2}
   pathTile: {fileID: 11400000, guid: c92a5ad959c635149a28456d2ddb69d4, type: 2}
+  plowSprite: {fileID: 21300000, guid: 75b13c982bdecb6448554b525380c3d7, type: 3}
+  plantPrefab: {fileID: 1618385542847428016, guid: e49c01c5ee6722b43860d69398e63b9a, type: 3}
+  plantPreviewPrefab: {fileID: 6859674045906714545, guid: 79c0d0b46e3d186419d8ef469e45029c, type: 3}
+  selectedRow: {fileID: 0}
 --- !u!1 &875222326
 GameObject:
   m_ObjectHideFlags: 0
@@ -37649,9 +37853,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-        m_MethodName: openBuildScene
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
+        m_MethodName: openManageFarmScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -37839,7 +38043,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: openOpenPackWindow
         m_Mode: 1
@@ -38649,10 +38853,14 @@ PrefabInstance:
     - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1799238792}
+      objectReference: {fileID: 1799238796}
     - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: openPack
+      value: OpenPack
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainSceneManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3802584240477103814, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_Name
@@ -38786,8 +38994,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: openInventoryButton
         m_Mode: 1
         m_Arguments:
@@ -39504,8 +39712,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: openMyFarmButton
         m_Mode: 1
         m_Arguments:
@@ -39842,37 +40050,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1799238793}
-  - component: {fileID: 1799238792}
   - component: {fileID: 1799238795}
+  - component: {fileID: 1799238796}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: Main Scene Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1799238792
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1799238791}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 664bc1ab1469e914e8f9726172d014b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  worldGenerator: {fileID: 0}
-  baseSeeds:
-  - {fileID: 11400000, guid: 3d369eecd2448f94cae66ef121b9d720, type: 2}
-  - {fileID: 11400000, guid: 26785d9e4f3b12644b1b52a92c1de504, type: 2}
-  - {fileID: 11400000, guid: 071d6adf92c14e34a93fd95cb9cfcc4f, type: 2}
-  - {fileID: 11400000, guid: ea1f8ce26be69c84b989d0308875662e, type: 2}
-  openPackButton: {fileID: 2105070264}
-  seedListView: {fileID: 1937503045}
-  seedRowPrefab: {fileID: 8764885263206398887, guid: e1b54ffb82d40dc498c13a44f71ce092, type: 3}
-  plantPrefab: {fileID: 1618385542847428016, guid: e49c01c5ee6722b43860d69398e63b9a, type: 3}
 --- !u!4 &1799238793
 Transform:
   m_ObjectHideFlags: 0
@@ -39900,6 +40086,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce778993de20a7e4fa670485af658e16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1799238796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1799238791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49b8081488a9b594dacd86821f89f029, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseSeeds:
+  - {fileID: 11400000, guid: 3d369eecd2448f94cae66ef121b9d720, type: 2}
+  - {fileID: 11400000, guid: 26785d9e4f3b12644b1b52a92c1de504, type: 2}
+  - {fileID: 11400000, guid: 071d6adf92c14e34a93fd95cb9cfcc4f, type: 2}
+  - {fileID: 11400000, guid: ea1f8ce26be69c84b989d0308875662e, type: 2}
+  seedListView: {fileID: 1937503045}
+  seedDisplays: []
+  openPackButton: {fileID: 2105070264}
+  seedRowPrefab: {fileID: 8764885263206398887, guid: e1b54ffb82d40dc498c13a44f71ce092, type: 3}
+  plantPrefab: {fileID: 1618385542847428016, guid: e49c01c5ee6722b43860d69398e63b9a, type: 3}
 --- !u!1 &1859397514
 GameObject:
   m_ObjectHideFlags: 0
@@ -40021,8 +40229,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: openShopButton
         m_Mode: 1
         m_Arguments:
@@ -40086,8 +40294,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Top: 20
+    m_Bottom: 40
   m_ChildAlignment: 0
   m_Spacing: 50
   m_ChildForceExpandWidth: 1
@@ -40347,8 +40555,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1799238792}
-        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+      - m_Target: {fileID: 1799238796}
+        m_TargetAssemblyTypeName: MainSceneManager, Assembly-CSharp
         m_MethodName: openOpenPackWindow
         m_Mode: 1
         m_Arguments:
@@ -40587,7 +40795,15 @@ PrefabInstance:
     - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1799238792}
+      objectReference: {fileID: 1799238796}
+    - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OpenPack
+      objectReference: {fileID: 0}
+    - target: {fileID: 3802584240477103810, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainSceneManager, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 3802584240477103814, guid: 4b0cf2d8f5fd70a4ab4c5232afe906c7, type: 3}
       propertyPath: m_Name
       value: Pack 1

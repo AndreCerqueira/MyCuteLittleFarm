@@ -151,14 +151,16 @@ public class Seed
     }
 
 
-    /*
     public void levelUp()
     {
         xp = 0;
         level++;
-        maxXp = 100;//Utils.getMaxXP(level, rarity);
+        float newMaxXp = maxXp * 1.5f;
+        maxXp = (int)newMaxXp;
         growthSpeed += 1;
-    }*/
+
+        LootLockerHelper.UpdateSeed(this);
+    }
 
 }
 

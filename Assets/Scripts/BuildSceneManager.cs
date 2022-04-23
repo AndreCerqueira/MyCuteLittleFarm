@@ -6,14 +6,10 @@ using UnityEngine.SceneManagement;
 using System;
 using LootLocker.Requests;
 
-public class BuildManager : MonoBehaviour
+public class BuildSceneManager : GameManager
 {
     // Variables
-    public User user;
-    public BaseSeed[] baseSeeds;
     [SerializeField] private GameObject seedSlotPrefab;
-    [SerializeField] private GameObject seedListView;
-    [SerializeField] private List<SeedDisplay> seedSlots;
 
     // Drop Down Player Actions Variables
     GameObject selectedOption;
@@ -22,22 +18,20 @@ public class BuildManager : MonoBehaviour
     [SerializeField] GameObject removeCursorOption;
     [SerializeField] GameObject plowCursorOption;
     new CameraController camera;
-    GridController gridController;
 
     // Other UI Variables
     [SerializeField] TextMeshProUGUI terrainCounter;
 
     // Start is called before the first frame update
-    void Awake()
+    protected override void Awake()
     {
-        user = new User();
+        base.Awake();
 
         selectedOption = mouseCursorOption;
         camera = FindObjectOfType<CameraController>();
-        gridController = FindObjectOfType<GridController>();
 
         WaitForUserCreated(() => {
-            CreateSeedSlots();
+            CreateSeedDisplay(seedSlotPrefab);
             CreatePlants();
             UpdateTerrainCounter();
         });
@@ -45,48 +39,6 @@ public class BuildManager : MonoBehaviour
     }
 
 
-    private void CreatePlants()            
-    {
-        foreach (Terrain terrain in user.terrainsUsed)
-        {
-            if (terrain.HasContent())
-            {
-                int content = int.Parse(terrain.content);
-                SeedDisplay slot = Utils.GetSeedDisplayInTerrain(content, seedSlots);
-                gridController.SetPlant(terrain.GetPosition(), slot);
-            }
-
-        }
-    }
-
-
-    private void CreateSeedSlots()
-    {
-
-        // Create all seed slots
-        foreach (Seed seed in user.seeds)
-        {
-            GameObject row = Instantiate(seedSlotPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-            row.GetComponent<SeedSlot>().seed = seed;
-            row.GetComponent<SeedSlot>().SetData();
-            row.transform.SetParent(seedListView.transform);
-            row.transform.localScale = new Vector3(1, 1, 1);
-            seedSlots.Add(row.GetComponent<SeedSlot>());
-        }
-
-    }
-
-
-    public void WaitForUserCreated(Action onComplete) => StartCoroutine(_WaitForUserCreated(onComplete));
-    IEnumerator _WaitForUserCreated(Action onComplete)
-    {
-        while (user.loading)
-            yield return new WaitForFixedUpdate();
-
-        onComplete();
-    }
-
-    
     public void SetTerrain(Terrain terrain)
     {
         user.terrainsUsed.Add(terrain);
@@ -94,6 +46,7 @@ public class BuildManager : MonoBehaviour
 
         UpdateTerrainCounter();
     }
+
 
     public void SetTerrain(Terrain terrain, Vector3Int newPosition)
     {
@@ -176,7 +129,7 @@ public class BuildManager : MonoBehaviour
         allTerrains.AddRange(user.terrainsAvailable);
 
         LootLockerHelper.UpdateTerrainList(allTerrains, ()=> {
-            SceneManager.LoadScene("BuildScene");
+            SceneManager.LoadScene("MainScene");
         });
     }
 

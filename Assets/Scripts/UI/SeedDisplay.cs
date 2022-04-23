@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public enum SeedState
@@ -12,6 +13,9 @@ public enum SeedState
 public class SeedDisplay : MonoBehaviour
 {
     // Variables
+
+    protected new CameraController camera;
+    protected GridController gridController;
     public Seed seed;
     private SeedState _seedState = SeedState.stored;
 
@@ -23,17 +27,18 @@ public class SeedDisplay : MonoBehaviour
         }
         set
         {
-            if (value == SeedState.planted)
-            {
-                print("ENTROU1 " + seed.name);
-                transform.Find("Image/Plant Button").GetComponent<Image>().enabled = false;
-                transform.Find("Image/Remove Button").GetComponent<Image>().enabled = true;
-            }
-            else
-            {
-                print("ENTROU2 " + seed.name);
-                transform.Find("Image/Plant Button").GetComponent<Image>().enabled = true;
-                transform.Find("Image/Remove Button").GetComponent<Image>().enabled = false;
+            if (SceneManager.GetActiveScene().name == "BuildScene") 
+            { 
+                if (value == SeedState.planted)
+                {
+                    transform.Find("Image/Plant Button").GetComponent<Image>().enabled = false;
+                    transform.Find("Image/Remove Button").GetComponent<Image>().enabled = true;
+                }
+                else
+                {
+                    transform.Find("Image/Plant Button").GetComponent<Image>().enabled = true;
+                    transform.Find("Image/Remove Button").GetComponent<Image>().enabled = false;
+                }
             }
             _seedState = value;
         }
@@ -62,6 +67,10 @@ public class SeedDisplay : MonoBehaviour
 
     protected virtual void Start()
     {
+
+        camera = FindObjectOfType<CameraController>();
+        gridController = FindObjectOfType<GridController>();
+
         //seedState = SeedState.stored;
     }
 
@@ -111,7 +120,6 @@ public class SeedDisplay : MonoBehaviour
         {
             RemovePlant(gridController);
         }
-
     }
 
 

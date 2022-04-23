@@ -17,12 +17,25 @@ public class GridController : MonoBehaviour
     [SerializeField] private RuleTile pathTile;
     [SerializeField] private Sprite plowSprite;
     new CameraController camera;
-    BuildManager buildManager;
+    BuildSceneManager buildManager;
+    MainSceneManager mainManager;
     [SerializeField] private GameObject plantPrefab;
     [SerializeField] private GameObject plantPreviewPrefab;
 
-
     private Vector3Int previousMousePos = new Vector3Int();
+
+    private PlayerAction action
+    {
+        get 
+        {
+            return camera.action;
+        }
+        set
+        {
+            camera.action = value;
+        }
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,9 +44,11 @@ public class GridController : MonoBehaviour
         camera = FindObjectOfType<CameraController>();
 
         if (SceneManager.GetActiveScene().name == "BuildScene")
-            buildManager = FindObjectOfType<BuildManager>();
+            buildManager = FindObjectOfType<BuildSceneManager>();
+        else
+            mainManager = FindObjectOfType<MainSceneManager>();
 
-        user = (SceneManager.GetActiveScene().name == "BuildScene") ? FindObjectOfType<BuildManager>().user : FindObjectOfType<GameManager>().user;
+        user = FindObjectOfType<GameManager>().user;
 
     }
 
@@ -41,39 +56,33 @@ public class GridController : MonoBehaviour
     void Update()
     {
 
-        if (SceneManager.GetActiveScene().name == "BuildScene")
-        {
-            PlayerAction action = camera.action;
-
-            if (action != PlayerAction.mouse) 
-            { 
-                // Get Position
-                Vector3Int mousePos = GetMousePosition();
-                if (!mousePos.Equals(previousMousePos))
-                {
-                    interactiveMap.SetTile(previousMousePos, null);
-                    interactiveMap.SetTile(mousePos, hoverTile);
-                    previousMousePos = mousePos;
-                }
-
-                // Plow
-                if (action == PlayerAction.plow)
-                    if (Input.GetMouseButton(0))
-                        SetTile(mousePos);
-
-                // Remove
-                if (action == PlayerAction.remove)
-                    if (Input.GetMouseButton(0))
-                        RemoveTile(mousePos);
-
-                // Plant
-                if(action == PlayerAction.plant)
-                    if (Input.GetMouseButton(0))
-                        SetPlant(mousePos);
+        if (action != PlayerAction.mouse) 
+        { 
+            // Get Position
+            Vector3Int mousePos = GetMousePosition();
+            if (!mousePos.Equals(previousMousePos))
+            {
+                interactiveMap.SetTile(previousMousePos, null);
+                interactiveMap.SetTile(mousePos, hoverTile);
+                previousMousePos = mousePos;
             }
 
+            // Plow
+            if (action == PlayerAction.plow)
+                if (Input.GetMouseButton(0))
+                    SetTile(mousePos);
+
+            // Remove
+            if (action == PlayerAction.remove)
+                if (Input.GetMouseButton(0))
+                    RemoveTile(mousePos);
+
+            // Plant
+            if(action == PlayerAction.plant)
+                if (Input.GetMouseButton(0))
+                    SetPlant(mousePos);
         }
-        
+
     }
 
 
@@ -82,6 +91,7 @@ public class GridController : MonoBehaviour
     public SeedDisplay selectedRow;
     private void SetPlant(Vector3Int mousePos)
     {
+
         if (pathMap.GetTile(mousePos) == pathTile)
         {
 
@@ -107,13 +117,15 @@ public class GridController : MonoBehaviour
         }
 
         // Reset States
-        camera.action = PlayerAction.mouse;
+        action = PlayerAction.mouse;
         RemoveHoverTile();
         ResetHoverTile();
     }
 
     public void SetPlant(Vector3Int mousePos, SeedDisplay row)
     {
+        print("ENTROUUUUU ");
+
         // Initial Verifications
         if (pathMap.GetTile(mousePos) != pathTile)
             return;
@@ -148,7 +160,7 @@ public class GridController : MonoBehaviour
                 Utils.GetTerrainById(id, user.terrainsUsed).content = "null";
             }
             catch (System.Exception) {
-                throw;
+                
             } 
 
             Destroy(plant);
@@ -169,10 +181,14 @@ public class GridController : MonoBehaviour
 
     public void SetTileFromDb(Terrain terrain)
     {
-        
+
         pathMap.SetTile(terrain.GetPosition(), pathTile);
-        buildManager.SetTerrain(terrain);
-        
+
+        if (SceneManager.GetActiveScene().name == "BuildScene")
+            buildManager.SetTerrain(terrain);
+        else
+            mainManager.SetTerrain(terrain);
+
     }
 
 

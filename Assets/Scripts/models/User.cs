@@ -11,7 +11,7 @@ public class User
     public int inGamePacks;
     public float inGameCoins;
     public float walletCoins;
-    public GameManager gameManager;
+    public MainSceneManager mainManager;
     public List<Terrain> terrainsUsed;
     public List<Terrain> terrainsAvailable;
     public List<Seed> seeds;
@@ -30,35 +30,9 @@ public class User
         
         });
 
-        if (SceneManager.GetActiveScene().name == "MainScene") 
-        { 
-            gameManager = GameObject.FindObjectOfType<GameManager>();
-
-            LoadUserData();
-        }
 
         id = "";
 
-    }
-
-
-    public void LoadUserData()
-    {
-        GetUserDbData();
-    }
-
-
-    private void GetUserDbData()
-    {
-        LootLockerHelper.GetGameCoins((coins) => {
-            gameManager.inGameCoins = coins;
-        });
-
-        LootLockerHelper.GetPacks((packs) => {
-            gameManager.inGamePacks = packs;
-        });
-
-        walletCoins = 0f;
     }
 
 

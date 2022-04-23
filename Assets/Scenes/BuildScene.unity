@@ -45102,7 +45102,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1799238793}
   - component: {fileID: 1799238795}
-  - component: {fileID: 1799238796}
   m_Layer: 0
   m_Name: Build Manager
   m_TagString: Untagged
@@ -45137,7 +45136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e5e6af9307b77c48948522e32cc534b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrainsAvailable: 0
   baseSeeds:
   - {fileID: 11400000, guid: 071d6adf92c14e34a93fd95cb9cfcc4f, type: 2}
   - {fileID: 11400000, guid: 3d369eecd2448f94cae66ef121b9d720, type: 2}
@@ -45145,24 +45143,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26785d9e4f3b12644b1b52a92c1de504, type: 2}
   seedSlotPrefab: {fileID: 5062646343375261423, guid: 80904c38d55e6c143b767a99804191ad, type: 3}
   seedListView: {fileID: 949980863}
+  seedSlots: []
   cursorDropDownList: {fileID: 747794174}
   mouseCursorOption: {fileID: 1600444833}
   removeCursorOption: {fileID: 413495758}
   plowCursorOption: {fileID: 1025564000}
   terrainCounter: {fileID: 1736006061}
-  tempBaseSeed: {fileID: 11400000, guid: 071d6adf92c14e34a93fd95cb9cfcc4f, type: 2}
---- !u!114 &1799238796
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1799238791}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0b6dc1130fec42b47956b1186a30ec81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1871611815
 GameObject:
   m_ObjectHideFlags: 0

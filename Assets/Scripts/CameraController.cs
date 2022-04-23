@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public enum PlayerAction
@@ -15,10 +16,10 @@ public enum PlayerAction
 public class CameraController : MonoBehaviour
 {
     // Variables
+    int UILayer;
     Vector3 touchStart;
     private float zoomOutMin = 3;
     private float zoomOutMax = 5;
-    private bool cameraMoving = false;
     int width = 5;
     int height = 5;
     public PlayerAction action;
@@ -27,20 +28,23 @@ public class CameraController : MonoBehaviour
     void Awake()
     {
         action = PlayerAction.mouse;
+        UILayer = LayerMask.NameToLayer("UI");
     }
 
 
     // Update is called once per frame
     void Update()
     {
+        if (!IsPointerOverUIElement()) 
+        { 
+            if (Input.GetMouseButtonDown(0))
+            {
+                touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            if (action == PlayerAction.mouse)
+                Move();
         }
-
-        if (action == PlayerAction.mouse)
-            Move();
 
         Zoom(Input.GetAxis("Mouse ScrollWheel"));
     }
@@ -66,7 +70,6 @@ public class CameraController : MonoBehaviour
         else if (Input.GetMouseButton(0))
         {
             Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            StartCoroutine(detectCameraMoving());
 
             Vector3 nextPosition = Camera.main.transform.position + direction;
             if (nextPosition.x >= 0 && nextPosition.x <= width * 3 && nextPosition.y >= 0 && nextPosition.y <= height * 3)
@@ -80,13 +83,36 @@ public class CameraController : MonoBehaviour
         Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - increment, zoomOutMin, zoomOutMax);
     }
 
-    public IEnumerator detectCameraMoving()
-    {
-        yield return new WaitForSeconds(0.1f);
 
-        if (Input.GetMouseButton(0))
-            cameraMoving = true;
-        else
-            cameraMoving = false;
+    //Returns 'true' if we touched or hovering on Unity UI element.
+    public bool IsPointerOverUIElement()
+    {
+        return IsPointerOverUIElement(GetEventSystemRaycastResults());
     }
+
+
+    //Returns 'true' if we touched or hovering on Unity UI element.
+    private bool IsPointerOverUIElement(List<RaycastResult> eventSystemRaysastResults)
+    {
+        for (int index = 0; index < eventSystemRaysastResults.Count; index++)
+        {
+            RaycastResult curRaysastResult = eventSystemRaysastResults[index];
+            if (curRaysastResult.gameObject.layer == UILayer)
+                return true;
+        }
+        return false;
+    }
+
+
+    //Gets all event system raycast results of current mouse or touch position.
+    static List<RaycastResult> GetEventSystemRaycastResults()
+    {
+        PointerEventData eventData = new PointerEventData(EventSystem.current);
+        eventData.position = Input.mousePosition;
+        List<RaycastResult> raysastResults = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, raysastResults);
+        return raysastResults;
+    }
+
+
 }

@@ -101,7 +101,7 @@ public class LootLockerHelper : MonoBehaviour
     }
 
 
-    public static void AddTerrain()
+    public static void AddTerrain(string coins)
     {
         LootLockerSDKManager.TriggeringAnEvent("getTerrain", (response) =>
         {
@@ -109,6 +109,9 @@ public class LootLockerHelper : MonoBehaviour
             {
                 Debug.Log("Successfully triggered event");
                 WaitForTerrainReward();
+
+                // TODO Remove coins from wallet not from game 
+                //updateGameCoins(coins);
             }
             else
             {
@@ -216,7 +219,7 @@ public class LootLockerHelper : MonoBehaviour
                                 value = storageItem.value;
                         }
 
-                        BaseSeed[] baseSeeds = (SceneManager.GetActiveScene().name == "MainScene") ? GameObject.FindObjectOfType<GameManager>().baseSeeds : GameObject.FindObjectOfType<BuildManager>().baseSeeds;
+                        BaseSeed[] baseSeeds = (SceneManager.GetActiveScene().name == "MainScene") ? GameObject.FindObjectOfType<GameManager>().baseSeeds : GameObject.FindObjectOfType<BuildSceneManager>().baseSeeds;
 
                         foreach (var _baseSeed in baseSeeds)
                         {
