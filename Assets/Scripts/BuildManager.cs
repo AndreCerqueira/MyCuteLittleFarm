@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
+using LootLocker.Requests;
 
 public class BuildManager : MonoBehaviour
 {
     // Variables
     public User user;
-    public int terrainsAvailable;
+    public BaseSeed[] baseSeeds;
     [SerializeField] private GameObject seedSlotPrefab;
     [SerializeField] private GameObject seedListView;
+    [SerializeField] private List<SeedDisplay> seedSlots;
 
     // Drop Down Player Actions Variables
     GameObject selectedOption;
@@ -33,39 +36,81 @@ public class BuildManager : MonoBehaviour
         camera = FindObjectOfType<CameraController>();
         gridController = FindObjectOfType<GridController>();
 
-        terrainsAvailable = 0;
-        terrainCounter.text = terrainsAvailable.ToString();
+        user.terrainsAvailable = new List<Terrain>();
+        terrainCounter.text = user.terrainsAvailable.Count.ToString();
 
-        SetSeedSlots();
+        WaitForUserCreated(() => {
+            CreateSeedSlots();
+            CreatePlants();
+        });
+
     }
 
 
-    [Header("Temp")]
-    [SerializeField] private BaseSeed tempBaseSeed;
-
-    private void SetSeedSlots()
+    private void CreatePlants()            
     {
-        Seed seed = new Seed(1, tempBaseSeed, 1, 1);
-        // Create seed slot
-        GameObject row = Instantiate(seedSlotPrefab, new Vector3(0, 0, 0), Quaternion.identity);
-        row.GetComponent<SeedSlot>().seed = seed;
-        row.GetComponent<SeedSlot>().SetData();
-        row.transform.SetParent(seedListView.transform);
-        row.transform.localScale = new Vector3(1, 1, 1);
+        foreach (Terrain terrain in user.terrainsUsed)
+        {
+            if (terrain.HasContent())
+            {
+                int content = int.Parse(terrain.content);
+                SeedDisplay slot = Utils.GetSeedDisplayInTerrain(content, seedSlots);
+                gridController.SetPlant(terrain.GetPosition(), slot);
+            }
+
+        }
+    }
+
+
+    private void CreateSeedSlots()
+    {
+
+        // Create all seed slots
+        foreach (Seed seed in user.seeds)
+        {
+            GameObject row = Instantiate(seedSlotPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            row.GetComponent<SeedSlot>().seed = seed;
+            row.GetComponent<SeedSlot>().SetData();
+            row.transform.SetParent(seedListView.transform);
+            row.transform.localScale = new Vector3(1, 1, 1);
+            seedSlots.Add(row.GetComponent<SeedSlot>());
+        }
+
+    }
+
+
+    public void WaitForUserCreated(Action onComplete) => StartCoroutine(_WaitForUserCreated(onComplete));
+    IEnumerator _WaitForUserCreated(Action onComplete)
+    {
+        while (user.loading)
+            yield return new WaitForFixedUpdate();
+
+        onComplete();
     }
 
     
-    public void SetTerrain()
+    public void SetTerrain(Terrain terrain)
     {
-        terrainsAvailable--;
-        terrainCounter.text = terrainsAvailable.ToString();
+        user.terrainsAvailable.Remove(terrain);
+
+        user.terrainsUsed.Add(terrain);
+        terrainCounter.text = user.terrainsAvailable.Count.ToString();
     }
 
-    
-    public void RemoveTerrain()
+    public void SetTerrain(Terrain terrain, Vector3Int newPosition)
     {
-        terrainsAvailable++;
-        terrainCounter.text = terrainsAvailable.ToString();
+        user.terrainsAvailable.Remove(terrain);
+        user.terrainsUsed.Add(terrain);
+        terrain.UpdatePosition(newPosition.x, newPosition.y);
+        terrainCounter.text = user.terrainsAvailable.Count.ToString();
+    }
+
+
+    public void RemoveTerrain(Terrain terrain)
+    {
+        user.terrainsAvailable.Add(terrain);
+        terrain.UpdatePosition(null, null);
+        terrainCounter.text = user.terrainsAvailable.Count.ToString();
     }
 
 
@@ -123,14 +168,18 @@ public class BuildManager : MonoBehaviour
 
     public void Save()
     {
-        SceneManager.LoadScene("MainScene");
+        List<Terrain> allTerrains = user.terrainsUsed;
+        allTerrains.AddRange(user.terrainsAvailable);
+
+        LootLockerHelper.UpdateTerrainList(allTerrains, ()=> {
+            SceneManager.LoadScene("BuildScene");
+        });
     }
 
     public void RemoveAll()
     {
-        int amount = gridController.GetTileAmount();
-        terrainsAvailable += amount;
-        terrainCounter.text = terrainsAvailable.ToString();
+        user.terrainsAvailable.AddRange(user.terrainsUsed);
+        terrainCounter.text = user.terrainsAvailable.Count.ToString();
 
         gridController.RemoveAllPlants();
         gridController.RemoveAllTiles();

@@ -13,7 +13,7 @@ public class SeedDisplay : MonoBehaviour
 {
     // Variables
     public Seed seed;
-    private SeedState _seedState;
+    private SeedState _seedState = SeedState.stored;
 
     public SeedState seedState
     {
@@ -25,11 +25,13 @@ public class SeedDisplay : MonoBehaviour
         {
             if (value == SeedState.planted)
             {
+                print("ENTROU1 " + seed.name);
                 transform.Find("Image/Plant Button").GetComponent<Image>().enabled = false;
                 transform.Find("Image/Remove Button").GetComponent<Image>().enabled = true;
             }
             else
             {
+                print("ENTROU2 " + seed.name);
                 transform.Find("Image/Plant Button").GetComponent<Image>().enabled = true;
                 transform.Find("Image/Remove Button").GetComponent<Image>().enabled = false;
             }
@@ -60,7 +62,7 @@ public class SeedDisplay : MonoBehaviour
 
     protected virtual void Start()
     {
-        seedState = SeedState.stored;
+        //seedState = SeedState.stored;
     }
 
 

@@ -9,7 +9,7 @@ public class GridController : MonoBehaviour
 {
     // Variables
     private Grid grid;
-    public List<Terrain> terrainsUsed;
+    private User user;
     [SerializeField] private bool interactible;
     [SerializeField] private Tilemap interactiveMap;
     [SerializeField] private Tilemap pathMap;
@@ -33,14 +33,7 @@ public class GridController : MonoBehaviour
         if (SceneManager.GetActiveScene().name == "BuildScene")
             buildManager = FindObjectOfType<BuildManager>();
 
-        User user = (SceneManager.GetActiveScene().name == "BuildScene") ? FindObjectOfType<BuildManager>().user : FindObjectOfType<GameManager>().user;
-        
-        terrainsUsed = user.terrains;
-        foreach (var terrain in user.terrains)
-        {
-            if (terrain.x != null && terrain.y != null)
-                pathMap.SetTile(new Vector3Int((int)terrain.x, (int)terrain.y, 0), pathTile); 
-        }
+        user = (SceneManager.GetActiveScene().name == "BuildScene") ? FindObjectOfType<BuildManager>().user : FindObjectOfType<GameManager>().user;
 
     }
 
@@ -91,22 +84,26 @@ public class GridController : MonoBehaviour
     {
         if (pathMap.GetTile(mousePos) == pathTile)
         {
-            // Get Final Position
-            Vector3 finalPos = pathMap.GetCellCenterWorld(mousePos);
-            finalPos.y += 0.4f;
 
-            // Create plant
-            GameObject prefab = (SceneManager.GetActiveScene().name == "BuildScene") ? plantPreviewPrefab : plantPrefab;
-            GameObject plant = Instantiate(prefab, finalPos, Quaternion.identity);
-            plant.GetComponent<TerrainContent>().row = selectedRow;
-            plant.GetComponent<SpriteRenderer>().sortingOrder = mousePos.y * -1;
-            plant.transform.parent = GameObject.Find("Plants").transform;
-            plant.transform.name = "Plant " + plant.GetComponent<TerrainContent>().row.seed.instanceId;
-            plant.GetComponent<TerrainContent>().row.seedState = SeedState.planted;
+            Terrain terrainInTile = Utils.GetTerrainInTile(mousePos, user.terrainsUsed);
+            if (!terrainInTile.HasContent()) { 
+                
+                // Get Final Position
+                Vector3 finalPos = pathMap.GetCellCenterWorld(mousePos);
+                finalPos.y += 0.4f;
 
-            // Update Terrain in tile
-            Terrain terrainInTile = GetTerrainInTile(mousePos);
-            terrainInTile.content = plant.GetComponent<TerrainContent>().row.seed.instanceId.ToString();
+                // Create plant
+                GameObject prefab = (SceneManager.GetActiveScene().name == "BuildScene") ? plantPreviewPrefab : plantPrefab;
+                GameObject plant = Instantiate(prefab, finalPos, Quaternion.identity);
+                plant.GetComponent<TerrainContent>().row = selectedRow;
+                plant.GetComponent<SpriteRenderer>().sortingOrder = mousePos.y * -1;
+                plant.transform.parent = GameObject.Find("Plants").transform;
+                plant.transform.name = "Plant " + plant.GetComponent<TerrainContent>().row.seed.instanceId;
+                plant.GetComponent<TerrainContent>().row.seedState = SeedState.planted;
+
+                // Update Terrain in tile
+                terrainInTile.content = plant.GetComponent<TerrainContent>().row.seed.instanceId.ToString();
+            }
         }
 
         // Reset States
@@ -115,13 +112,41 @@ public class GridController : MonoBehaviour
         ResetHoverTile();
     }
 
+    public void SetPlant(Vector3Int mousePos, SeedDisplay row)
+    {
+        // Initial Verifications
+        if (pathMap.GetTile(mousePos) != pathTile)
+            return;
+
+        // Get Final Position
+        Vector3 finalPos = pathMap.GetCellCenterWorld(mousePos);
+        finalPos.y += 0.4f;
+
+        // Create plant
+        GameObject prefab = (SceneManager.GetActiveScene().name == "BuildScene") ? plantPreviewPrefab : plantPrefab;
+        GameObject plant = Instantiate(prefab, finalPos, Quaternion.identity);
+        plant.GetComponent<TerrainContent>().row = row;
+        plant.GetComponent<SpriteRenderer>().sortingOrder = mousePos.y * -1;
+        plant.transform.parent = GameObject.Find("Plants").transform;
+        plant.transform.name = "Plant " + plant.GetComponent<TerrainContent>().row.seed.instanceId;
+        plant.GetComponent<TerrainContent>().row.seedState = SeedState.planted;
+
+        // Update Terrain in tile
+        Terrain terrainInTile = Utils.GetTerrainInTile(mousePos, user.terrainsUsed);
+        terrainInTile.content = plant.GetComponent<TerrainContent>().row.seed.instanceId.ToString();
+
+    }
+
 
     public void RemovePlant(string id)
     {
         GameObject plant = GameObject.Find("Plant " + id);
 
-        if (plant != null)
+        if (plant != null) 
+        {
+            Utils.GetTerrainById(id, user.terrainsUsed).content = "null";   
             Destroy(plant);
+        }
     }
 
 
@@ -136,14 +161,33 @@ public class GridController : MonoBehaviour
 
     #region Tiles
 
-    private void SetTile(Vector3Int mousePos)
+    public void SetTileFromDb(Terrain terrain)
     {
-        if (buildManager.terrainsAvailable > 0 && pathMap.GetTile(mousePos) == null) 
-        { 
+        
+        pathMap.SetTile(terrain.GetPosition(), pathTile);
+        buildManager.SetTerrain(terrain);
+        
+    }
+
+
+    public void SetTile(Vector3Int mousePos)
+    {
+        if (user.terrainsAvailable.Count > 0 && pathMap.GetTile(mousePos) == null)
+        {
             pathMap.SetTile(mousePos, pathTile);
-            buildManager.SetTerrain();
-            terrainsUsed.Add(new Terrain("1", mousePos.x, mousePos.y));
+
+            Terrain terrain = GetAvailableTerrain();
+            buildManager.SetTerrain(terrain, mousePos);
         }
+    }
+
+
+    private Terrain GetAvailableTerrain()
+    {
+        if (user.terrainsAvailable.Count > 0) 
+            return user.terrainsAvailable[0];
+
+        return null;
     }
 
 
@@ -152,43 +196,24 @@ public class GridController : MonoBehaviour
         if (pathMap.GetTile(mousePos) != null)
         {
             // Remove Terrain
-            Terrain terrain = GetTerrainInTile(mousePos);
-            terrainsUsed.Remove(terrain);
+            Terrain terrain = Utils.GetTerrainInTile(mousePos, user.terrainsUsed);
+            terrain.RemoveData();
+            user.terrainsUsed.Remove(terrain);
 
             // Remove Plant in Terrain
             RemovePlant(terrain.content);
 
             // Remove Tile
             pathMap.SetTile(mousePos, null);
-            buildManager.RemoveTerrain();
+            buildManager.RemoveTerrain(terrain);
         }
-    }
-
-
-    private Terrain GetTerrainInTile(Vector3Int mousePos)
-    {
-        foreach (Terrain terrain in terrainsUsed)
-        {
-            if (terrain.x == mousePos.x && terrain.y == mousePos.y)
-            {
-                return terrain;
-            }
-        }
-        
-        return null;
     }
 
 
     public void RemoveAllTiles()
     {
-        terrainsUsed.Clear();
+        user.terrainsUsed.Clear();
         pathMap.ClearAllTiles();
-    }
-
-
-    public int GetTileAmount()
-    {
-        return terrainsUsed.Count;
     }
 
 

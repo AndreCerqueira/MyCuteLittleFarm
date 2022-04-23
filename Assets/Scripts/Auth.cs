@@ -12,6 +12,11 @@ using System;
 public class Auth : MonoBehaviour
 {
 
+    [SerializeField] TextMeshProUGUI emailText;
+    [SerializeField] TextMeshProUGUI passwordText;
+    [SerializeField] Toggle remember;
+
+
 #if UNITY_WEBGL
     [DllImport("__Internal")]
     private static extern void Web3Connect();
@@ -25,11 +30,6 @@ public class Auth : MonoBehaviour
     private int expirationTime;
     private string account;
 
-    [SerializeField] TextMeshProUGUI emailText;
-    [SerializeField] TextMeshProUGUI passwordText;
-    [SerializeField] Toggle remember;
-
-
     public void Start()
     {
         LootLockerSDKManager.CheckWhiteLabelSession(response =>
@@ -40,7 +40,7 @@ public class Auth : MonoBehaviour
                 Debug.Log("session is valid, you can start a game session");
 
                 StartLootLockerSession(() => {
-                    SceneManager.LoadScene("MainScene");
+                    SceneManager.LoadScene("BuildScene");
                 });
 
             }

@@ -85,6 +85,41 @@ public class Utils : MonoBehaviour
     }
 
 
+    public static Terrain GetTerrainInTile(Vector3Int mousePos, List<Terrain> terrains)
+    {
+        foreach (Terrain terrain in terrains)
+        {
+            if (terrain.x == mousePos.x && terrain.y == mousePos.y)
+            {
+                return terrain;
+            }
+        }
+
+        return null;
+    }
+
+
+    public static SeedDisplay GetSeedDisplayInTerrain(int terrainId, List<SeedDisplay> seedDisplays)
+    {
+        foreach (SeedDisplay display in seedDisplays)
+        {
+            if (display.seed.instanceId == terrainId)
+                return display;
+        }
+        return null;
+    }
+
+    public static Terrain GetTerrainById(string id, List<Terrain> terrains)
+    {
+        foreach (Terrain terrain in terrains)
+        {
+            if (terrain.content == id)
+                return terrain;
+        }
+        return null;
+    }
+
+
     #region Effects
 
     static public IEnumerator DoFadeOut(CanvasGroup canvasG)

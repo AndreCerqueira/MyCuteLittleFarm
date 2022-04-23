@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,43 +11,52 @@ public class User
     public int inGamePacks;
     public float inGameCoins;
     public float walletCoins;
-    public Inventory inventory;
     public GameManager gameManager;
-    public List<Terrain> terrains;
+    public List<Terrain> terrainsUsed;
+    public List<Terrain> terrainsAvailable;
+    public List<Seed> seeds;
+    public bool loading = true;
 
     public User ()
     {
 
-        GetTerrains();
+        GetTerrains(() => {
 
-        if (SceneManager.GetActiveScene().name == "MainScene")
+            GetSeeds(() => {
+
+                GetPlants();
+            
+            });
+        
+        });
+
+        if (SceneManager.GetActiveScene().name == "MainScene") 
+        { 
             gameManager = GameObject.FindObjectOfType<GameManager>();
 
+            LoadUserData();
+        }
+
         id = "";
+
+        //LootLockerHelper.AddTerrain();
 
     }
 
 
     public void LoadUserData()
     {
-        GetInventory();
         GetUserDbData();
-    }
-
-
-    private void GetInventory()
-    {
-        inventory = new Inventory();
     }
 
 
     private void GetUserDbData()
     {
-        inventory.GetGameCoins((coins) => {
+        LootLockerHelper.GetGameCoins((coins) => {
             gameManager.inGameCoins = coins;
         });
 
-        inventory.GetPacks((packs) => {
+        LootLockerHelper.GetPacks((packs) => {
             gameManager.inGamePacks = packs;
         });
 
@@ -54,22 +64,56 @@ public class User
     }
 
 
-    void GetTerrains() 
+    private void GetTerrains(Action onComplete) 
     {
-        // Default free terrains
-        
-        terrains = new List<Terrain>();
 
-        // Available Ones
-        terrains.Add(new Terrain("1", 9, 11));
-        terrains.Add(new Terrain("2", 10, 11));
-        terrains.Add(new Terrain("3", 11, 11));
-        terrains.Add(new Terrain("4", 9, 10));
-        terrains.Add(new Terrain("5", 10, 10));
-        terrains.Add(new Terrain("6", 11, 10));
-        terrains.Add(new Terrain("7", 9, 9));
-        terrains.Add(new Terrain("8", 10, 9));
-        terrains.Add(new Terrain("9", 11, 9));
+        GridController gridController = GameObject.FindObjectOfType<GridController>();
+        terrainsUsed = new List<Terrain>();
+        terrainsAvailable = new List<Terrain>();
+
+        LootLockerHelper.GetTerrains((terrains) => {
+
+            foreach (Terrain terrain in terrains)
+            {
+                terrainsAvailable.Add(terrain);
+            }
+
+            // Set Using Terrains
+            foreach (Terrain terrain in terrains)
+            {
+                Debug.Log("PLACED " + terrain.id + " -> " + terrain.x + " | " + terrain.y);
+
+                if (terrain.IsPlaced())
+                {
+                    Vector3Int pos = new Vector3Int((int)terrain.x, (int)terrain.y, 0);
+                    gridController.SetTileFromDb(terrain);
+                }
+            }
+
+            onComplete();
+
+        });
+
+    }
+
+
+    private void GetSeeds(Action onComplete)
+    {
+
+        LootLockerHelper.GetSeeds((seeds) => {
+
+            this.seeds = seeds;
+
+            onComplete();
+
+        });
+
+    }
+
+    private void GetPlants()
+    {
+
+        loading = false;
 
     }
 

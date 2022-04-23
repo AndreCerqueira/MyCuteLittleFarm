@@ -81,7 +81,7 @@ public class GameManager : MonoBehaviour
     public void AddCoin(float amount)
     {
         inGameCoins += amount;
-        user.inventory.UpdateGameCoins(inGameCoins.ToString());
+        LootLockerHelper.UpdateGameCoins(inGameCoins.ToString());
     }
 
 
@@ -264,7 +264,7 @@ public class GameManager : MonoBehaviour
     {
         Web3Manager.TransferERC20(()=> {
 
-            user.inventory.AddPack(inGameCoins.ToString());
+            LootLockerHelper.AddPack(inGameCoins.ToString());
             inGamePacks++;
 
         });
@@ -278,7 +278,7 @@ public class GameManager : MonoBehaviour
         if (!packOpened)
         {
 
-            user.inventory.OpenPack((reward) => {
+            LootLockerHelper.OpenPack((reward) => {
 
                 obj.GetComponent<Animator>().SetTrigger("play");
                 lastPackOpened = obj;

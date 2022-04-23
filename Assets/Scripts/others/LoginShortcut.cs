@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LoginShortcut : MonoBehaviour
 {
+    public static int temp;
     public void Start()
     {
         LootLockerSDKManager.CheckWhiteLabelSession(response =>
@@ -17,7 +18,10 @@ public class LoginShortcut : MonoBehaviour
                 Debug.Log("session is valid, you can start a game session");
 
                 StartLootLockerSession(() => {
+                    if (temp == 0) { 
+                    temp = 1;
                     SceneManager.LoadScene("BuildScene");
+                    }
                 });
 
             }
