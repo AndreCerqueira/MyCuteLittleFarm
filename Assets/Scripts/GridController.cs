@@ -144,7 +144,13 @@ public class GridController : MonoBehaviour
 
         if (plant != null) 
         {
-            Utils.GetTerrainById(id, user.terrainsUsed).content = "null";   
+            try {
+                Utils.GetTerrainById(id, user.terrainsUsed).content = "null";
+            }
+            catch (System.Exception) {
+                throw;
+            } 
+
             Destroy(plant);
         }
     }
@@ -197,11 +203,11 @@ public class GridController : MonoBehaviour
         {
             // Remove Terrain
             Terrain terrain = Utils.GetTerrainInTile(mousePos, user.terrainsUsed);
-            terrain.RemoveData();
             user.terrainsUsed.Remove(terrain);
 
             // Remove Plant in Terrain
             RemovePlant(terrain.content);
+            terrain.RemoveData();
 
             // Remove Tile
             pathMap.SetTile(mousePos, null);
@@ -212,6 +218,9 @@ public class GridController : MonoBehaviour
 
     public void RemoveAllTiles()
     {
+        foreach (Terrain terrain in user.terrainsUsed)
+            terrain.RemoveData();
+
         user.terrainsUsed.Clear();
         pathMap.ClearAllTiles();
     }

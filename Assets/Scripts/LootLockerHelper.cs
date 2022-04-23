@@ -33,15 +33,12 @@ public class LootLockerHelper : MonoBehaviour
                 int count = 0;
                 foreach (Terrain terrain in terrains)
                 {
-                    count++;
                     GetTerrainProperties(terrain.id, (x, y, content) => {
+                        count++;
 
-                        if (x != null && y != null & content != null) 
-                        { 
-                            terrain.x = int.Parse(x);
-                            terrain.y = int.Parse(y);
-                            terrain.content = content;
-                        }
+                        terrain.x = (x != "null") ? int.Parse(x) : null;
+                        terrain.y = (y != "null") ? int.Parse(y) : null;
+                        terrain.content = content;
 
                         // Return after the last one
                         if (count == terrains.Count)
@@ -74,6 +71,7 @@ public class LootLockerHelper : MonoBehaviour
 
                     foreach (var item in response.storage)
                     {
+
                         if (item.key == "x")
                             x = item.value;
 
@@ -83,6 +81,10 @@ public class LootLockerHelper : MonoBehaviour
                         if (item.key == "content")
                             content = item.value;
                     }
+
+                    x = (x == null || x == "") ? "null" : x;
+                    y = (y == null || y == "") ? "null" : y;
+                    content = (content == null || content == "") ? "null" : content;
 
                     callback(x, y, content);
                 }
@@ -158,13 +160,11 @@ public class LootLockerHelper : MonoBehaviour
         int count = 0;
         foreach (Terrain terrain in terrains)
         {
-            print("SAVING TERRAIN " + terrain.id);
 
             Dictionary<string, string> newStates = new Dictionary<string, string>();
             newStates.Add("x", terrain.x.ToString());
             newStates.Add("y", terrain.y.ToString());
-
-            //newStates.Add("content", terrain.content);
+            newStates.Add("content", terrain.content);
             
 
             LootLockerSDKManager.UpdateOneOrMoreKeyValuePairForAssetInstances(terrain.id, newStates, (response) =>

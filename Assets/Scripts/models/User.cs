@@ -24,8 +24,8 @@ public class User
 
             GetSeeds(() => {
 
-                GetPlants();
-            
+                loading = false;
+
             });
         
         });
@@ -38,8 +38,6 @@ public class User
         }
 
         id = "";
-
-        //LootLockerHelper.AddTerrain();
 
     }
 
@@ -81,8 +79,6 @@ public class User
             // Set Using Terrains
             foreach (Terrain terrain in terrains)
             {
-                Debug.Log("PLACED " + terrain.id + " -> " + terrain.x + " | " + terrain.y);
-
                 if (terrain.IsPlaced())
                 {
                     Vector3Int pos = new Vector3Int((int)terrain.x, (int)terrain.y, 0);
@@ -107,13 +103,6 @@ public class User
             onComplete();
 
         });
-
-    }
-
-    private void GetPlants()
-    {
-
-        loading = false;
 
     }
 

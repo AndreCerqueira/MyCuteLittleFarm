@@ -36,12 +36,10 @@ public class BuildManager : MonoBehaviour
         camera = FindObjectOfType<CameraController>();
         gridController = FindObjectOfType<GridController>();
 
-        user.terrainsAvailable = new List<Terrain>();
-        terrainCounter.text = user.terrainsAvailable.Count.ToString();
-
         WaitForUserCreated(() => {
             CreateSeedSlots();
             CreatePlants();
+            UpdateTerrainCounter();
         });
 
     }
@@ -91,18 +89,18 @@ public class BuildManager : MonoBehaviour
     
     public void SetTerrain(Terrain terrain)
     {
+        user.terrainsUsed.Add(terrain);
         user.terrainsAvailable.Remove(terrain);
 
-        user.terrainsUsed.Add(terrain);
-        terrainCounter.text = user.terrainsAvailable.Count.ToString();
+        UpdateTerrainCounter();
     }
 
     public void SetTerrain(Terrain terrain, Vector3Int newPosition)
     {
-        user.terrainsAvailable.Remove(terrain);
         user.terrainsUsed.Add(terrain);
+        user.terrainsAvailable.Remove(terrain);
         terrain.UpdatePosition(newPosition.x, newPosition.y);
-        terrainCounter.text = user.terrainsAvailable.Count.ToString();
+        UpdateTerrainCounter();
     }
 
 
@@ -110,6 +108,12 @@ public class BuildManager : MonoBehaviour
     {
         user.terrainsAvailable.Add(terrain);
         terrain.UpdatePosition(null, null);
+        UpdateTerrainCounter();
+    }
+
+
+    public void UpdateTerrainCounter()
+    {
         terrainCounter.text = user.terrainsAvailable.Count.ToString();
     }
 
@@ -179,7 +183,7 @@ public class BuildManager : MonoBehaviour
     public void RemoveAll()
     {
         user.terrainsAvailable.AddRange(user.terrainsUsed);
-        terrainCounter.text = user.terrainsAvailable.Count.ToString();
+        UpdateTerrainCounter();
 
         gridController.RemoveAllPlants();
         gridController.RemoveAllTiles();
