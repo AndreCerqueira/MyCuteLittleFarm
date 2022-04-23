@@ -7,7 +7,7 @@ public class BaseSeed : ScriptableObject
 {
 
     public int id;
-    public string name;
+    public new string name;
     public Sprite image;
     public Rarity rarity;
     public Sprite[] animation;

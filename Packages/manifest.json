@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.lootlocker.lootlockersdk": "https://github.com/LootLocker/unity-sdk.git",
+    "com.unity.2d.tilemap.extras": "https://github.com/Unity-Technologies/2d-extras.git#master",
     "com.unity.2d.animation": "7.0.4",
     "com.unity.2d.pixel-perfect": "5.0.1",
     "com.unity.2d.psdimporter": "6.0.3",
